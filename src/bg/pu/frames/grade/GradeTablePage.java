@@ -11,7 +11,7 @@ import java.awt.*;
 public class GradeTablePage extends JFrame {
     public void displayGradePage(Student student){
 
-        GridLayout gridLayout = new GridLayout(5, 1);
+        GridLayout gridLayout = new GridLayout(4, 1);
         this.setLayout(gridLayout);
         gridLayout.layoutContainer(this);
         this.add(new MarksPanel(student));

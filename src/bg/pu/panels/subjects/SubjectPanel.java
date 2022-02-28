@@ -1,18 +1,11 @@
 package bg.pu.panels.subjects;
 
-import bg.pu.entity.ClassOfStudents;
 import bg.pu.entity.Subjects;
-import bg.pu.frames.classes.ClassMenuPage;
-import bg.pu.frames.classes.ClassPage;
 import bg.pu.frames.subjects.AddSubjectPage;
 import bg.pu.frames.subjects.SubjectMenuPage;
-import bg.pu.frames.subjects.UpdateSubjectPage;
-import bg.pu.service.DataService;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class SubjectPanel extends JPanel {
@@ -21,7 +14,7 @@ public class SubjectPanel extends JPanel {
     private JComboBox comboBox;
     private JButton buttonAddSubject = new JButton("Add subject");
 
-    public SubjectPanel(ArrayList<Subjects> subjectsArrayList){
+    public SubjectPanel(ArrayList<Subjects> subjectsArrayList) {
         GridBagLayout layout = new GridBagLayout();
         this.setLayout(layout);
         GridBagConstraints gbc = new GridBagConstraints();
@@ -51,28 +44,20 @@ public class SubjectPanel extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridwidth = 4;
         this.add(buttonAddSubject, gbc);
-        comboBox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                //getSelectedIndex
-                System.out.println(comboBox.getSelectedItem().toString());
-                SubjectMenuPage subjectMenuPage = new SubjectMenuPage();
-                subjectMenuPage.displaySubjectMenuPage(subjectsArrayList.get(comboBox.getSelectedIndex()));
-                // secondPage.displaySecondPage(dataService.getTeacherById(comboBox.getSelectedIndex()+1));
-                // secondPage.displaySecondPage(comboBox.getSelectedItem().toString(), dataService.getClassByTeacher(dataService.getTeacherByName(comboBox.getSelectedItem().toString())).getGrade().getName(), dataService.getAllStudentByClassId(dataService.getClassByTeacher(dataService.getTeacherByName(comboBox.getSelectedItem().toString()))));
-                //new bg.pu.panels.classes.ClassInfoPanel(comboBox.getSelectedItem().toString(), dataService.getClassByTeacher(dataService.getTeacherByName(comboBox.getSelectedItem().toString())).getGrade().getName());
-            }
+        comboBox.addActionListener(e -> {
+            System.out.println(comboBox.getSelectedItem().toString());
+            SubjectMenuPage subjectMenuPage = new SubjectMenuPage();
+            subjectMenuPage.displaySubjectMenuPage(subjectsArrayList.get(comboBox.getSelectedIndex()));
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(SubjectPanel.this);
+            frame.dispose();
         });
-        buttonAddSubject.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                AddSubjectPage addSubjectPage = new AddSubjectPage();
-                addSubjectPage.displayAddSubjectPage();
-            }
+        buttonAddSubject.addActionListener(e -> {
+            AddSubjectPage addSubjectPage = new AddSubjectPage();
+            addSubjectPage.displayAddSubjectPage();
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(SubjectPanel.this);
+            frame.dispose();
         });
 
-    }
-    public JComboBox getComboBox() {
-        return comboBox;
     }
 }
 

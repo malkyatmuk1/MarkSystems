@@ -7,8 +7,6 @@ import bg.pu.service.DataService;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class TeacherPickerPanel extends JPanel {
@@ -49,29 +47,16 @@ public class TeacherPickerPanel extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridwidth = 4;
         this.add(buttonAddTeacher, gbc);
-        comboBox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                //getSelectedIndex
-                TeacherMenuPage teacherMenuPAge = new TeacherMenuPage();
-                System.out.println(comboBox.getSelectedItem().toString());
-                teacherMenuPAge.displaySecondPage(dataService.getTeacherById(comboBox.getSelectedIndex()+1));
-               // secondPage.displaySecondPage(comboBox.getSelectedItem().toString(), dataService.getClassByTeacher(dataService.getTeacherByName(comboBox.getSelectedItem().toString())).getGrade().getName(), dataService.getAllStudentByClassId(dataService.getClassByTeacher(dataService.getTeacherByName(comboBox.getSelectedItem().toString()))));
-                //new bg.pu.panels.classes.ClassInfoPanel(comboBox.getSelectedItem().toString(), dataService.getClassByTeacher(dataService.getTeacherByName(comboBox.getSelectedItem().toString())).getGrade().getName());
-            }
+        comboBox.addActionListener(e -> {
+            TeacherMenuPage teacherMenuPAge = new TeacherMenuPage();
+            teacherMenuPAge.displaySecondPage(dataService.getTeacherById(comboBox.getSelectedIndex()+1));
+            JFrame frame1 = (JFrame) SwingUtilities.getWindowAncestor(TeacherPickerPanel.this);
+            frame1.dispose();
         });
-        buttonAddTeacher.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                AddTeacherPage addTeacherPage = new AddTeacherPage();
-                addTeacherPage.displayAddTeacherPage();
-                frame.dispose();
-
-            }
+        buttonAddTeacher.addActionListener(e -> {
+            AddTeacherPage addTeacherPage = new AddTeacherPage();
+            addTeacherPage.displayAddTeacherPage();
+            frame.dispose();
         });
-
-    }
-
-    public JComboBox getComboBox() {
-        return comboBox;
     }
 }

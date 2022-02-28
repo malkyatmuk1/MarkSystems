@@ -6,8 +6,6 @@ import bg.pu.service.DataService;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class AddClassPanel extends JPanel {
@@ -16,6 +14,8 @@ public class AddClassPanel extends JPanel {
     private JTextField nameField = new JTextField("Write the class name");
     private JComboBox comboBox;
     private JButton buttonAddClass = new JButton("Add class");
+    private JButton returnBackButton = new JButton("Back");
+
     public AddClassPanel(){
         GridBagLayout layout = new GridBagLayout();
         this.setLayout(layout);
@@ -49,14 +49,24 @@ public class AddClassPanel extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridwidth = 0;
         this.add(buttonAddClass, gbc);
-        buttonAddClass.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dataService.addClass(nameField.getText(), teacherArrayList.get(comboBox.getSelectedIndex()).getTeacherId());
-                FirstPage firstPage = new FirstPage();
-                firstPage.displayFirstPage(dataService.getAllTeachers(), dataService.getAllClass());
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridwidth = 0;
+        this.add(returnBackButton, gbc);
 
-            }
+        buttonAddClass.addActionListener(e -> {
+            dataService.addClass(nameField.getText(), teacherArrayList.get(comboBox.getSelectedIndex()).getTeacherId());
+            FirstPage firstPage = new FirstPage();
+            firstPage.displayFirstPage(dataService.getAllTeachers(), dataService.getAllClass());
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(AddClassPanel.this);
+            frame.dispose();
+        });
+        returnBackButton.addActionListener(e -> {
+            FirstPage firstPage = new FirstPage();
+            firstPage.displayFirstPage(dataService.getAllTeachers(), dataService.getAllClass());
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(AddClassPanel.this);
+            frame.dispose();
         });
     }
 }

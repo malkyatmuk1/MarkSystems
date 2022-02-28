@@ -5,14 +5,11 @@ import bg.pu.service.DataService;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class AddTeacherPanel extends JPanel {
     private JLabel teacherFirstName = new JLabel("First name");
     private JLabel teacherSecondName = new JLabel("Second name");
     private JLabel teacherThirdName = new JLabel("Third name");
-    private JLabel title = new JLabel("Add new teacher");
     private JTextField firstName = new JTextField("Write first name");
     private JTextField secondName = new JTextField("Write second name");
     private JTextField thirdName = new JTextField("Write third name");
@@ -52,15 +49,12 @@ public class AddTeacherPanel extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridwidth = 0;
         this.add(addButton, gbc);
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dataService.addTeacher(firstName, secondName, thirdName);
-                //dataService.addClass(dataService.getTeacherByName(firstName.getText() + " " + secondName.getText() + " " + thirdName.getText()).getTeacherId(), comboBox.getSelectedIndex()+1);
-                FirstPage firstPage = new FirstPage();
-                firstPage.displayFirstPage(dataService.getAllTeachers(), dataService.getAllClass());
-
-            }
+        addButton.addActionListener(e -> {
+            dataService.addTeacher(firstName, secondName, thirdName);
+            FirstPage firstPage = new FirstPage();
+            firstPage.displayFirstPage(dataService.getAllTeachers(), dataService.getAllClass());
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(AddTeacherPanel.this);
+            frame.dispose();
         });
     }
 }

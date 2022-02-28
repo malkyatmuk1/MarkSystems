@@ -1,16 +1,12 @@
 package bg.pu.panels.teacher;
 
 import bg.pu.entity.Teacher;
-import bg.pu.frames.classes.ClassPage;
 import bg.pu.frames.teacher.FirstPage;
 import bg.pu.frames.teacher.UpdateTeacherPage;
-import bg.pu.panels.classes.ClassMenuPanel;
 import bg.pu.service.DataService;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class TeacherMenuPanel extends JPanel {
     private JButton buttonGradeStudents = new JButton("View grades of the students");
@@ -34,31 +30,22 @@ public class TeacherMenuPanel extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridwidth = 2;
         this.add(buttonDeleteTeacher, gbc);
-        buttonUpdateTeacher.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                UpdateTeacherPage updateTecherPage = new UpdateTeacherPage();
-                updateTecherPage.displayUpdateTeacherPage(teacher);
-                JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(TeacherMenuPanel.this);
-                frame.dispose();
-            }
+        buttonUpdateTeacher.addActionListener(e -> {
+            UpdateTeacherPage updateTecherPage = new UpdateTeacherPage();
+            updateTecherPage.displayUpdateTeacherPage(teacher);
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(TeacherMenuPanel.this);
+            frame.dispose();
         });
-        buttonDeleteTeacher.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //TODO ask if is the user is sure to delete the teacher
-                dataService.deleteTeacher(teacher);
-                JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(TeacherMenuPanel.this);
-                frame.dispose();
-                FirstPage firstPage = new FirstPage();
-                firstPage.displayFirstPage(dataService.getAllTeachers(), dataService.getAllClass());
-            }
+        buttonDeleteTeacher.addActionListener(e -> {
+            //TODO ask if is the user is sure to delete the teacher
+            dataService.deleteTeacher(teacher);
+            FirstPage firstPage = new FirstPage();
+            firstPage.displayFirstPage(dataService.getAllTeachers(), dataService.getAllClass());
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(TeacherMenuPanel.this);
+            frame.dispose();
         });
-        buttonGradeStudents.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-               //TODO to the grade of students
-            }
+        buttonGradeStudents.addActionListener(e -> {
+           //TODO to the grade of students
         });
     }
 

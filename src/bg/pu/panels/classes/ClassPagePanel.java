@@ -7,8 +7,6 @@ import bg.pu.service.DataService;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class ClassPagePanel extends JPanel {
@@ -48,28 +46,19 @@ public class ClassPagePanel extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridwidth = 4;
         this.add(buttonAddTeacher, gbc);
-        comboBox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                //getSelectedIndex
-                System.out.println(comboBox.getSelectedItem().toString());
-                ClassMenuPage classMenuPage = new ClassMenuPage();
-                classMenuPage.displayClassMenuPage(dataService.getClassById(comboBox.getSelectedIndex()+1));
-               // secondPage.displaySecondPage(dataService.getTeacherById(comboBox.getSelectedIndex()+1));
-                // secondPage.displaySecondPage(comboBox.getSelectedItem().toString(), dataService.getClassByTeacher(dataService.getTeacherByName(comboBox.getSelectedItem().toString())).getGrade().getName(), dataService.getAllStudentByClassId(dataService.getClassByTeacher(dataService.getTeacherByName(comboBox.getSelectedItem().toString()))));
-                //new bg.pu.panels.classes.ClassInfoPanel(comboBox.getSelectedItem().toString(), dataService.getClassByTeacher(dataService.getTeacherByName(comboBox.getSelectedItem().toString())).getGrade().getName());
-            }
+        comboBox.addActionListener(e -> {
+            System.out.println(comboBox.getSelectedItem().toString());
+            ClassMenuPage classMenuPage = new ClassMenuPage();
+            classMenuPage.displayClassMenuPage(dataService.getClassById(comboBox.getSelectedIndex()+1));
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(ClassPagePanel.this);
+            frame.dispose();
         });
-        buttonAddTeacher.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        buttonAddTeacher.addActionListener(e -> {
 
-                ClassPage classPage= new ClassPage();
-                classPage.displayClassPage();
-            }
+            ClassPage classPage= new ClassPage();
+            classPage.displayClassPage();
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(ClassPagePanel.this);
+            frame.dispose();
         });
-
-    }
-    public JComboBox getComboBox() {
-        return comboBox;
     }
 }

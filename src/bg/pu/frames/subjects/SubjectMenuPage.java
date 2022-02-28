@@ -1,8 +1,7 @@
 package bg.pu.frames.subjects;
 
 import bg.pu.entity.Subjects;
-import bg.pu.panels.classes.SubjectMenuPanel;
-import bg.pu.panels.students.AddStudentPanel;
+import bg.pu.panels.subjects.SubjectMenuPanel;
 
 import javax.swing.*;
 import java.awt.*;

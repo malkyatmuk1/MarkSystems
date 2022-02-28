@@ -23,6 +23,8 @@ public class MarksPanel extends JPanel {
     private JButton buttonAddGrade = new JButton("Add grade");
 
     public MarksPanel(Student student) {
+        BorderLayout layout = new BorderLayout();
+        this.setLayout(layout);
         jLabel = new JLabel(student.getFirstName() + " " + student.getSecondName() + " " + student.getThirdName() + "'s marks");
         this.add(jLabel, BorderLayout.PAGE_START);
         ArrayList<Grade> gradeArrayList = dataService.getAllGradesByStudent(student);
@@ -47,8 +49,9 @@ public class MarksPanel extends JPanel {
         //SCROLLPANE,SET SZE,SET CLOSE OPERATION
         JScrollPane pane = new JScrollPane(jtable);
         //jtable.setBounds(30,40,200,300);
-        this.add(buttonAddGrade, BorderLayout.PAGE_END);
         this.add(pane, BorderLayout.CENTER);
+        this.add(buttonAddGrade, BorderLayout.PAGE_END);
+
 
         buttonAddGrade.addActionListener(new ActionListener() {
             @Override

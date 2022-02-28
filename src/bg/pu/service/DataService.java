@@ -58,7 +58,7 @@ public class DataService {
     }
 
     public void updateTeacher(JTextField firstName, JTextField secondName, JTextField thirdName, int teacherId) {
-        executeQueryBySqlString("update teacher set FIRSTNAME='" + firstName.getText() + "', SECONDNAME='" + secondName.getText() + "', THIRDNAME='" + thirdName.getText() + "' where teacherid=" + teacherId);
+        executeInsertQuery("update teacher set FIRSTNAME='" + firstName.getText() + "', SECONDNAME='" + secondName.getText() + "', THIRDNAME='" + thirdName.getText() + "' where teacherid=" + teacherId);
     }
 
     public void deleteTeacher(Teacher teacher) {
@@ -168,11 +168,11 @@ public class DataService {
     }
 
     public void updateSubject(Subjects subjects) {
-        executeInsertQuery("update subjects set NAME='" + subjects.getName() + "'where subjectId="+subjects.getSubjectId());
+        executeInsertQuery("update subjects set NAME='" + subjects.getName() + "'where subjectId=" + subjects.getSubjectId());
     }
 
     public void deleteSubject(String name) {
-        executeInsertQuery("DELETE FROM subjects WHERE name='" + name+"'");
+        executeInsertQuery("DELETE FROM subjects WHERE name='" + name + "'");
     }
 
     //STUDENT
@@ -266,9 +266,9 @@ public class DataService {
 
     //SUBJECT CLASS
 
-    public ArrayList<SubjectClass> getAllSubjectClass(ClassOfStudents classOfStudents){
+    public ArrayList<SubjectClass> getAllSubjectClass(ClassOfStudents classOfStudents) {
         ArrayList<SubjectClass> subjectClassArrayList = new ArrayList<>();
-        ResultSet result = executeQueryBySqlString("select * from subject_class where classid="+classOfStudents.getClassId());
+        ResultSet result = executeQueryBySqlString("select * from subject_class where classid=" + classOfStudents.getClassId());
         try {
             ResultSetMetaData metaData = result.getMetaData();
             int columnCount = metaData.getColumnCount();
@@ -286,7 +286,8 @@ public class DataService {
         }
         return subjectClassArrayList;
     }
-    public ArrayList<SubjectClass> getAllSubjectClass(){
+
+    public ArrayList<SubjectClass> getAllSubjectClass() {
         ArrayList<SubjectClass> subjectClassArrayList = new ArrayList<>();
         ResultSet result = executeQueryBySqlString("select * from subject_class");
         try {
@@ -306,9 +307,10 @@ public class DataService {
         }
         return subjectClassArrayList;
     }
-    public ArrayList<ClassOfStudents> getAllSubjectClassWithoutSubject(Subjects subjects){
+
+    public ArrayList<ClassOfStudents> getAllSubjectClassWithoutSubject(Subjects subjects) {
         ArrayList<ClassOfStudents> subjectClassArrayList = new ArrayList<>();
-        ResultSet result = executeQueryBySqlString("select a.classId from class a left join subject_class b on a.classId = b.classid and b.subjectid="+subjects.getSubjectId() + " where subjectid is null");
+        ResultSet result = executeQueryBySqlString("select a.classId from class a left join subject_class b on a.classId = b.classid and b.subjectid=" + subjects.getSubjectId() + " where subjectid is null");
         try {
             ResultSetMetaData metaData = result.getMetaData();
             int columnCount = metaData.getColumnCount();
@@ -333,11 +335,35 @@ public class DataService {
     }
 
     public void updateSubjectClass(SubjectClass subjectClass) {
-        executeInsertQuery("update subject_class set subjectId=" + subjectClass.getSubject().getSubjectId() + ", ClassID=" + subjectClass.getClassId().getClassId()+ " where subjectclassid=" + subjectClass.getSubjectClassId());
+        executeInsertQuery("update subject_class set subjectId=" + subjectClass.getSubject().getSubjectId() + ", ClassID=" + subjectClass.getClassId().getClassId() + " where subjectclassid=" + subjectClass.getSubjectClassId());
     }
 
     public void deleteSubjectClass(SubjectClass subjectClass) {
         executeInsertQuery("DELETE class subject_class WHERE subjectclassid=" + subjectClass.getSubjectClassId());
+    }
+
+    //REPORT
+    public ArrayList<String> getReportForAStudentsForMath() {
+        ArrayList<String> subjectClassArrayList = new ArrayList<>();
+        ResultSet result = executeQueryBySqlString("select b.* from grade a inner join student b on (a.grade_value = 6.0 and a.studentid = b.studentid)");
+        try {
+            ResultSetMetaData metaData = result.getMetaData();
+            int columnCount = metaData.getColumnCount();
+            int rowCount = 0;
+            while (result.next()) {
+                Object[] elements = new Object[columnCount];
+                for (int j = 0; j < columnCount; j++) {
+                    elements[j] = result.getObject(j + 1);
+                }
+                subjectClassArrayList.add(elements[0].toString() + " " + elements[1].toString() + " " + elements[2].toString() + " " + elements[3].toString() + " " + elements[4] );
+                rowCount++;
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return subjectClassArrayList;
     }
 
 

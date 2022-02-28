@@ -49,15 +49,12 @@ public class AddSubjectClassPanel extends JPanel {
             gbc.gridy = 2;
             this.add(addButton, gbc);
 
-            addButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(AddSubjectClassPanel.this);
-                    frame.dispose();
-                    dataService.addSubjectClass(subject, classArrayList.get(comboBox.getSelectedIndex()));
-                    FirstPage firstPage = new FirstPage();
-                    firstPage.displayFirstPage(dataService.getAllTeachers(), dataService.getAllClass());
-                }
+            addButton.addActionListener(e -> {
+                JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(AddSubjectClassPanel.this);
+                frame.dispose();
+                dataService.addSubjectClass(subject, classArrayList.get(comboBox.getSelectedIndex()));
+                FirstPage firstPage = new FirstPage();
+                firstPage.displayFirstPage(dataService.getAllTeachers(), dataService.getAllClass());
             });
         }
     }

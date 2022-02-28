@@ -15,7 +15,6 @@ public class UpdateTeacherPanel extends JPanel {
     private JLabel teacherFirstName = new JLabel("First name");
     private JLabel teacherSecondName = new JLabel("Second name");
     private JLabel teacherThirdName = new JLabel("Third name");
-    private JLabel gradeLabel = new JLabel("bg.pu.entity.Grade");
     private JLabel title = new JLabel("Update teacher");
     private JTextField firstName = new JTextField("Write first name");
     private JTextField secondName = new JTextField("Write second name");
@@ -68,14 +67,12 @@ public class UpdateTeacherPanel extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridwidth = 0;
         this.add(addButton, gbc);
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dataService.updateTeacher(firstName, secondName, thirdName, teacher.getTeacherId());
-                FirstPage firstPage = new FirstPage();
-                firstPage.displayFirstPage(dataService.getAllTeachers(), dataService.getAllClass());
-
-            }
+        addButton.addActionListener(e -> {
+            dataService.updateTeacher(firstName, secondName, thirdName, teacher.getTeacherId());
+            FirstPage firstPage = new FirstPage();
+            firstPage.displayFirstPage(dataService.getAllTeachers(), dataService.getAllClass());
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(UpdateTeacherPanel.this);
+            frame.dispose();
         });
     }
 }

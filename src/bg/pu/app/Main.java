@@ -40,7 +40,7 @@ public class Main {
 //                System.out.println(studentGrade);
 //            }
 
-
+//
         FirstPage firstPage = new FirstPage();
         firstPage.displayFirstPage(dataService.getAllTeachers(), dataService.getAllClass());
 //        Subjects subjects = dataService.getSubjectById(1);
@@ -50,11 +50,14 @@ public class Main {
 //        for (SubjectClass studentGrade:dataService.getAllSubjectClass()) {
 //            System.out.println(studentGrade);
 //        }
-//        System.out.println(dataService.getAllSubjectClass(dataService.getClassById(1)));
-//        ArrayList<Integer> classOfStudentsArrayList = dataService.getAllSubjectClassWithoutSubjectInteger(subjects);
-//            for (Integer studentGrade:classOfStudentsArrayList) {
-//                System.out.println(studentGrade);
-//            }
+        ArrayList<String> classOfStudentsArrayList = dataService.getReportForAStudentsForMath();
+            for (String studentGrade:classOfStudentsArrayList) {
+                System.out.println(studentGrade);
+            }
+            System.out.println(dataService.getStudentById(4).toString());
+        System.out.println(dataService.getStudentById(1).toString());
+        System.out.println(dataService.getAllGradesByStudent(dataService.getStudentById(1)));
 //    }
     }
 }
+

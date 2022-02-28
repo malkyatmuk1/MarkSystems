@@ -1,25 +1,20 @@
-package bg.pu.panels.classes;
+package bg.pu.panels.subjects;
 import bg.pu.entity.Subjects;
-import bg.pu.frames.classes.ClassMenuPage;
-import bg.pu.frames.classes.UpdateClassPage;
-import bg.pu.frames.students.StudentClassPage;
 import bg.pu.frames.subjectclass.AddSubjectClassPage;
-import bg.pu.frames.subjects.SubjectMenuPage;
 import bg.pu.frames.subjects.UpdateSubjectPage;
 import bg.pu.frames.teacher.FirstPage;
-import bg.pu.panels.subjectclass.AddSubjectClassPanel;
 import bg.pu.service.DataService;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class SubjectMenuPanel extends JPanel {
     private JButton buttonAddToClass = new JButton("Add to a class");
     private JButton buttonUpdateSubject = new JButton("Update subject");
     private JButton buttonDeleteSubject = new JButton("Delete subject");
+    private JButton returnBackButton = new JButton("Back");
     DataService dataService = new DataService();
+
     public SubjectMenuPanel(Subjects subject){
         GridBagLayout layout = new GridBagLayout();
         this.setLayout(layout);
@@ -37,34 +32,36 @@ public class SubjectMenuPanel extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridwidth = 2;
         this.add(buttonAddToClass, gbc);
-        buttonAddToClass.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(SubjectMenuPanel.this);
-                frame.dispose();
-                AddSubjectClassPage addSubjectClassPage = new AddSubjectClassPage();
-                addSubjectClassPage.displayAddSubjectClassPage(subject);
-            }
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridwidth = 2;
+        this.add(returnBackButton, gbc);
+        buttonAddToClass.addActionListener(e -> {
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(SubjectMenuPanel.this);
+            frame.dispose();
+            AddSubjectClassPage addSubjectClassPage = new AddSubjectClassPage();
+            addSubjectClassPage.displayAddSubjectClassPage(subject);
         });
-        buttonUpdateSubject.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(SubjectMenuPanel.this);
-                frame.dispose();
-                UpdateSubjectPage updateSubjectPage = new UpdateSubjectPage();
-                updateSubjectPage.displayUpdateSubjecPage(subject);
-            }
+        buttonUpdateSubject.addActionListener(e -> {
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(SubjectMenuPanel.this);
+            frame.dispose();
+            UpdateSubjectPage updateSubjectPage = new UpdateSubjectPage();
+            updateSubjectPage.displayUpdateSubjecPage(subject);
         });
-        buttonDeleteSubject.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //TODO ask if is the user is sure to delete the subject
-                dataService.deleteSubject(subject.getName());
-                JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(SubjectMenuPanel.this);
-                frame.dispose();
-                FirstPage firstPage = new FirstPage();
-                firstPage.displayFirstPage(dataService.getAllTeachers(), dataService.getAllClass());
-            }
+        buttonDeleteSubject.addActionListener(e -> {
+            //TODO ask if is the user is sure to delete the subject
+            dataService.deleteSubject(subject.getName());
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(SubjectMenuPanel.this);
+            frame.dispose();
+            FirstPage firstPage = new FirstPage();
+            firstPage.displayFirstPage(dataService.getAllTeachers(), dataService.getAllClass());
+        });
+        returnBackButton.addActionListener(e -> {
+            FirstPage firstPage = new FirstPage();
+            firstPage.displayFirstPage(dataService.getAllTeachers(), dataService.getAllClass());
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(SubjectMenuPanel.this);
+            frame.dispose();
         });
     }
 
