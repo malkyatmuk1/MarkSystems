@@ -6,6 +6,7 @@ public class Student {
   String secondName;
   String thirdName;
   ClassOfStudents classStudent;
+  String fullName;
 
   public Student(
       int studentId,
@@ -18,6 +19,7 @@ public class Student {
     this.secondName = secondName;
     this.thirdName = thirdName;
     this.classStudent = classStudent;
+    this.fullName = this.firstName + " " + this.secondName + " " + this.thirdName;
   }
 
   public int getStudentId() {
@@ -54,6 +56,14 @@ public class Student {
 
   public void setClassStudent(ClassOfStudents classStudent) {
     this.classStudent = classStudent;
+  }
+
+  public String getFullName() {
+    return fullName;
+  }
+
+  public void setFullName(String fullName) {
+    this.fullName = fullName;
   }
 
   @Override

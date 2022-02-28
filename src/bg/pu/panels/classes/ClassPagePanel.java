@@ -51,7 +51,8 @@ public class ClassPagePanel extends JPanel {
           System.out.println(comboBox.getSelectedItem().toString());
           ClassMenuPage classMenuPage = new ClassMenuPage();
           classMenuPage.displayClassMenuPage(
-              dataService.getClassById(comboBox.getSelectedIndex() + 1));
+              dataService.getClassById(
+                  classOfStudentsArrayList.get(comboBox.getSelectedIndex()).getClassId()));
           JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(ClassPagePanel.this);
           frame.dispose();
         });

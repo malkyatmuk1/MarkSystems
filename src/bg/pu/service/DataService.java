@@ -107,8 +107,8 @@ public class DataService {
         classOfStudentsArrayList.add(
             new ClassOfStudents(
                 Integer.parseInt(elements[0].toString()),
-                getTeacherById(Integer.parseInt(elements[1].toString())),
-                elements[2].toString()));
+                getTeacherById(Integer.parseInt(elements[2].toString())),
+                elements[1].toString()));
         rowCount++;
       }
     } catch (SQLException throwables) {
@@ -157,8 +157,8 @@ public class DataService {
     ClassOfStudents classOfStudents =
         new ClassOfStudents(
             Integer.parseInt(element[0].toString()),
-            getTeacherById(Integer.parseInt(element[1].toString())),
-            element[2].toString());
+            getTeacherById(Integer.parseInt(element[2].toString())),
+            element[1].toString());
     return classOfStudents;
   }
 
@@ -481,11 +481,11 @@ public class DataService {
   }
 
   // REPORT
-  public ArrayList<String> getReportForAStudentsForMath() {
-    ArrayList<String> subjectClassArrayList = new ArrayList<>();
+  public ArrayList<StudentWithGrade> getReportForAStudents() {
+    ArrayList<StudentWithGrade> subjectClassArrayList = new ArrayList<>();
     ResultSet result =
         executeQueryBySqlString(
-            "select b.* from grade a inner join student b on (a.grade_value = 6.0 and a.studentid = b.studentid)");
+            "select b.*, a.grade_value, a.subjectId from grade a inner join student b on (a.grade_value = 6.0 and a.studentid = b.studentid) where classid = 1");
     try {
       ResultSetMetaData metaData = result.getMetaData();
       int columnCount = metaData.getColumnCount();
@@ -496,15 +496,15 @@ public class DataService {
           elements[j] = result.getObject(j + 1);
         }
         subjectClassArrayList.add(
-            elements[0].toString()
-                + " "
-                + elements[1].toString()
-                + " "
-                + elements[2].toString()
-                + " "
-                + elements[3].toString()
-                + " "
-                + elements[4]);
+            new StudentWithGrade(
+                new Student(
+                    Integer.parseInt(elements[0].toString()),
+                    elements[1].toString(),
+                    elements[2].toString(),
+                    elements[3].toString(),
+                    getClassById(Integer.parseInt(elements[4].toString()))),
+                Float.parseFloat(elements[5].toString()),
+                getSubjectById(Integer.parseInt(elements[6].toString())).getName()));
         rowCount++;
       }
 

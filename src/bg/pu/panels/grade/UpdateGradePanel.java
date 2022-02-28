@@ -78,7 +78,7 @@ public class UpdateGradePanel extends JPanel {
         });
     //    returnBackButton.addActionListener(
     //        e -> {
-    //           subjectMenuPage = new SubjectMenuPage();
+    //          subjectMenuPage = new SubjectMenuPage();
     //          subjectMenuPage.displaySubjectMenuPage(subject);
     //          JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(UpdateGradePanel.this);
     //          frame.dispose();

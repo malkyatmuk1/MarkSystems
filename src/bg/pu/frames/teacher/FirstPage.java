@@ -3,6 +3,7 @@ package bg.pu.frames.teacher;
 import bg.pu.entity.ClassOfStudents;
 import bg.pu.entity.Teacher;
 import bg.pu.panels.classes.ClassPagePanel;
+import bg.pu.panels.report.ReportPanel;
 import bg.pu.panels.subjectclass.SubjectClassPanel;
 import bg.pu.panels.subjects.SubjectPanel;
 import bg.pu.panels.teacher.TeacherPickerPanel;
@@ -24,6 +25,7 @@ public class FirstPage extends JFrame {
     this.add(new ClassPagePanel(classOfStudentsArrayList));
     this.add(new SubjectPanel(dataService.getAllSubjects()));
     this.add(new SubjectClassPanel());
+    this.add(new ReportPanel());
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     this.setSize(screenSize.width, screenSize.height);
     this.setVisible(true);

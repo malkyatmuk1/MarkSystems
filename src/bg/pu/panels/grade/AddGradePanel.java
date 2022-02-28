@@ -3,12 +3,11 @@ package bg.pu.panels.grade;
 import bg.pu.entity.Student;
 import bg.pu.entity.SubjectClass;
 import bg.pu.frames.grade.GradeTablePage;
+import bg.pu.frames.students.StudentClassPage;
 import bg.pu.service.DataService;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class AddGradePanel extends JPanel {
@@ -18,6 +17,7 @@ public class AddGradePanel extends JPanel {
   private JLabel subject = new JLabel("Subject");
   private JLabel grade = new JLabel("Grade");
   private JButton addButton = new JButton("Add");
+  private JButton returnBackButton = new JButton("Back");
 
   public AddGradePanel(Student student) {
     Float[] gradeValue = {2f, 3f, 4f, 5f, 6f};
@@ -55,19 +55,29 @@ public class AddGradePanel extends JPanel {
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.gridwidth = 2;
     this.add(addButton, gbc);
+    gbc.gridx = 0;
+    gbc.gridy = 3;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.gridwidth = 2;
+    this.add(returnBackButton, gbc);
+
     addButton.addActionListener(
-        new ActionListener() {
-          @Override
-          public void actionPerformed(ActionEvent e) {
-            dataService.addGrade(
-                gradeValue[comboBoxGrade.getSelectedIndex()],
-                subjectClassArrayList.get(comboBoxSubject.getSelectedIndex()).getSubject(),
-                student);
-            GradeTablePage gradeTablePage = new GradeTablePage();
-            gradeTablePage.displayGradePage(student);
-            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(AddGradePanel.this);
-            frame.dispose();
-          }
+        e -> {
+          dataService.addGrade(
+              gradeValue[comboBoxGrade.getSelectedIndex()],
+              subjectClassArrayList.get(comboBoxSubject.getSelectedIndex()).getSubject(),
+              student);
+          GradeTablePage gradeTablePage = new GradeTablePage();
+          gradeTablePage.displayGradePage(student);
+          JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(AddGradePanel.this);
+          frame.dispose();
+        });
+    returnBackButton.addActionListener(
+        e -> {
+          StudentClassPage studentClassPage = new StudentClassPage();
+          studentClassPage.displayStudentClassPage(student.getClassStudent());
+          JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(AddGradePanel.this);
+          frame.dispose();
         });
   }
 }
