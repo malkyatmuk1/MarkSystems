@@ -7,18 +7,14 @@ import javax.swing.*;
 import java.awt.*;
 
 public class TeacherMenuPage extends JFrame {
-    public void displaySecondPage(Teacher teacher){
+  public void displaySecondPage(Teacher teacher) {
 
-
-        GridLayout gridLayout = new GridLayout(5, 1);
-        this.setLayout(gridLayout);
-        gridLayout.layoutContainer(this);
-//        this.add(new ClassInfoPanel(teacherName, className));
-//        this.add(new StudentsTablePanel(studentArrayList));
-        this.add(new TeacherMenuPanel(teacher));
-        //this.add(new UpdateTeacherPanel(teacher));
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setSize(screenSize.width, screenSize.height);
-        this.setVisible(true);
-    }
+    GridLayout gridLayout = new GridLayout(5, 1);
+    this.setLayout(gridLayout);
+    gridLayout.layoutContainer(this);
+    this.add(new TeacherMenuPanel(teacher));
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    this.setSize(screenSize.width, screenSize.height);
+    this.setVisible(true);
+  }
 }

@@ -3,24 +3,20 @@ package bg.pu.panels.subjectclass;
 import bg.pu.entity.ClassOfStudents;
 import bg.pu.entity.SubjectClass;
 import bg.pu.frames.subjectclass.SubjectClassTablePage;
-import bg.pu.panels.grade.UpdateGradePanel;
 import bg.pu.service.DataService;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class UpdateSubjectClassPanel extends JPanel {
     DataService dataService = new DataService();
     private JComboBox comboBoxClass;
-    private JComboBox comboBoxSubject;
     private JLabel subject = new JLabel("Subject");
     private JLabel subjectName;
     private JLabel classLabel = new JLabel("class");
-    private JLabel title = new JLabel("Update subject class");
     private JButton updateButton = new JButton("Update");
+    private JButton returnBackButton = new JButton("Back");
 
     public UpdateSubjectClassPanel(SubjectClass subjectClass) {
         subjectName = new JLabel(subjectClass.getSubject().getName());
@@ -32,7 +28,7 @@ public class UpdateSubjectClassPanel extends JPanel {
         }
         comboBoxClass = new JComboBox(className);
         comboBoxClass.setBounds(100, 100, 150, 40);
-        comboBoxClass.setSelectedIndex(getIndexOfTheClass(classArrayList, subjectClass.getClassId().getName()));
+        comboBoxClass.setSelectedIndex(0);
         GridBagLayout layout = new GridBagLayout();
         this.setLayout(layout);
         GridBagConstraints gbc = new GridBagConstraints();
@@ -57,17 +53,25 @@ public class UpdateSubjectClassPanel extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridwidth = 2;
         this.add(updateButton, gbc);
-        updateButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                subjectClass.setClassId(classArrayList.get(getIndexOfTheClass(classArrayList, className[comboBoxClass.getSelectedIndex()])));
-                dataService.updateSubjectClass(subjectClass);
-                SubjectClassTablePage subjectClassTablePage = new SubjectClassTablePage();
-                subjectClassTablePage.displaySubjectClassTablePage();
-                JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(UpdateSubjectClassPanel.this);
-                frame.dispose();
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridwidth = 2;
+        this.add(returnBackButton, gbc);
+        updateButton.addActionListener(e -> {
+            subjectClass.setClassId(classArrayList.get(getIndexOfTheClass(classArrayList, className[comboBoxClass.getSelectedIndex()])));
+            dataService.updateSubjectClass(subjectClass);
+            SubjectClassTablePage subjectClassTablePage = new SubjectClassTablePage();
+            subjectClassTablePage.displaySubjectClassTablePage();
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(UpdateSubjectClassPanel.this);
+            frame.dispose();
 
-            }
+        });
+        returnBackButton.addActionListener(e -> {
+            SubjectClassTablePage subjectClassTablePage = new SubjectClassTablePage();
+            subjectClassTablePage.displaySubjectClassTablePage();
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(UpdateSubjectClassPanel.this);
+            frame.dispose();
         });
     }
 

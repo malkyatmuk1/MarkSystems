@@ -2,10 +2,10 @@ package bg.pu.panels.subjectclass;
 
 import bg.pu.buttons.ButtonEditor;
 import bg.pu.buttons.ButtonRenderer;
-import bg.pu.entity.ClassOfStudents;
-import bg.pu.entity.Student;
 import bg.pu.entity.SubjectClass;
-import bg.pu.frames.students.AddStudentPage;
+import bg.pu.frames.subjects.SubjectMenuPage;
+import bg.pu.frames.teacher.FirstPage;
+import bg.pu.panels.teacher.UpdateTeacherPanel;
 import bg.pu.service.DataService;
 
 import javax.swing.*;
@@ -18,6 +18,7 @@ public class SubjectClassTablePanel extends JPanel {
     JTable jtable;
     String[] columnName = {"Subject name", "Class", "Update subject class ", "Delete subject class"};
     private JButton buttonAddStudent = new JButton("Update subject class");
+    private JButton returnBackButton = new JButton("Back");
     public SubjectClassTablePanel() {
         BorderLayout layout = new BorderLayout();
         this.setLayout(layout);
@@ -29,23 +30,23 @@ public class SubjectClassTablePanel extends JPanel {
             data[i][2] = "Update subject class";
             data[i][3] = "Delete subject class";
         }
-
-        // Initializing the JTabl
-
         this.jtable = new JTable(data, columnName);
 
         jtable.getColumnModel().getColumn(2).setCellRenderer(new ButtonRenderer());
 
-        //SET CUSTOM EDITOR TO TEAMS COLUMN
-        jtable.getColumnModel().getColumn(2).setCellEditor(new ButtonEditor(new JTextField(), subjectClassArrayList,1));
+        jtable.getColumnModel().getColumn(2).setCellEditor(new ButtonEditor(new JTextField(), subjectClassArrayList,1, this));
         jtable.getColumnModel().getColumn(3).setCellRenderer(new ButtonRenderer());
 
-        //SET CUSTOM EDITOR TO TEAMS COLUMN
-        jtable.getColumnModel().getColumn(3).setCellEditor(new ButtonEditor(new JTextField(), subjectClassArrayList , 1));
-        //SCROLLPANE,SET SZE,SET CLOSE OPERATION
+        jtable.getColumnModel().getColumn(3).setCellEditor(new ButtonEditor(new JTextField(), subjectClassArrayList , 1, this));
         JScrollPane pane = new JScrollPane(jtable);
-        //jtable.setBounds(30,40,200,300);
         this.add(pane, BorderLayout.CENTER);
-
+        this.add(returnBackButton, BorderLayout.PAGE_END);
+        returnBackButton.addActionListener(e -> {
+            FirstPage firstPage = new FirstPage();
+            firstPage.displayFirstPage(dataService.getAllTeachers(), dataService.getAllClass());
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(SubjectClassTablePanel.this);
+            frame.dispose();
+        });
     }
+
 }
