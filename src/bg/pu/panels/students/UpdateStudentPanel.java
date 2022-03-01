@@ -67,6 +67,7 @@ public class UpdateStudentPanel extends JPanel {
       className[i] = classOfStudentsArrayList.get(i).getName();
     }
     comboBox = new JComboBox(className);
+    // TODO not in the bounds if we deleted class because of the id!
     comboBox.setSelectedIndex(student.getClassStudent().getClassId() - 1);
     comboBox.setBounds(100, 100, 150, 40);
 

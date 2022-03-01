@@ -37,10 +37,13 @@ public class DataService {
   }
 
   public Teacher getTeacherById(int teacherId) {
-    ResultSet result =
-        executeQueryBySqlString("select * from teacher where teacherId='" + teacherId + "'");
+    String sql = "select * from teacher where teacherId=?";
     Object[] element = new Object[2];
     try {
+      Connection conn = DBConnection.getConnection();
+      PreparedStatement ps = conn.prepareStatement(sql);
+      ps.setInt(1, teacherId);
+      ResultSet result = ps.executeQuery();
       ResultSetMetaData metaData = result.getMetaData();
       int columnCount = metaData.getColumnCount();
 
@@ -64,31 +67,49 @@ public class DataService {
   }
 
   public void addTeacher(JTextField firstName, JTextField secondName, JTextField thirdName) {
-    executeInsertQuery(
-        "insert into teacher (FIRSTNAME, SECONDNAME, THIRDNAME) VALUES ('"
-            + firstName.getText()
-            + "', '"
-            + secondName.getText()
-            + "', '"
-            + thirdName.getText()
-            + "');");
+    String sql = "insert into teacher (FIRSTNAME, SECONDNAME, THIRDNAME) VALUES (?, ?, ?)";
+    Connection conn = DBConnection.getConnection();
+    PreparedStatement ps = null;
+    try {
+      ps = conn.prepareStatement(sql);
+      ps.setString(1, firstName.getText());
+      ps.setString(2, secondName.getText());
+      ps.setString(3, thirdName.getText());
+      ps.executeUpdate();
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
   }
 
   public void updateTeacher(
       JTextField firstName, JTextField secondName, JTextField thirdName, int teacherId) {
-    executeInsertQuery(
-        "update teacher set FIRSTNAME='"
-            + firstName.getText()
-            + "', SECONDNAME='"
-            + secondName.getText()
-            + "', THIRDNAME='"
-            + thirdName.getText()
-            + "' where teacherid="
-            + teacherId);
+    String sql =
+        "update teacher set FIRSTNAME = ?, SECONDNAME = ?, THIRDNAME = ?  where teacherid = ?";
+    Connection conn = DBConnection.getConnection();
+    PreparedStatement ps = null;
+    try {
+      ps = conn.prepareStatement(sql);
+      ps.setString(1, firstName.getText());
+      ps.setString(2, secondName.getText());
+      ps.setString(3, thirdName.getText());
+      ps.setInt(4, teacherId);
+      ps.executeUpdate();
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
   }
 
   public void deleteTeacher(Teacher teacher) {
-    executeInsertQuery("DELETE FROM teacher WHERE teacherId=" + teacher.getTeacherId());
+    String sql = "DELETE FROM teacher WHERE teacherId=?";
+    Connection conn = DBConnection.getConnection();
+    PreparedStatement ps = null;
+    try {
+      ps = conn.prepareStatement(sql);
+      ps.setInt(1, teacher.getTeacherId());
+      ps.executeUpdate();
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
   }
 
   // CLASS
@@ -118,29 +139,58 @@ public class DataService {
   }
 
   public void addClass(String name, int teacherId) {
-    executeInsertQuery(
-        "insert into class (NAME, TEACHERID) VALUES ('" + name + "', " + teacherId + ")");
+    String sql = "insert into class (NAME, TEACHERID) VALUES (?, ?)";
+    Connection conn = DBConnection.getConnection();
+    PreparedStatement ps = null;
+    try {
+      ps = conn.prepareStatement(sql);
+      ps.setString(1, name);
+      ps.setInt(2, teacherId);
+      ps.executeUpdate();
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
   }
 
   public void updateClass(ClassOfStudents classOfStudents, String name, Teacher teacher) {
-    executeInsertQuery(
-        "update class set NAME='"
-            + name
-            + "', TEACHERID="
-            + teacher.getTeacherId()
-            + " where CLASSID="
-            + classOfStudents.getClassId());
+
+    String sql = "update class set NAME = ?, TEACHERID=? where CLASSID = ?";
+    Connection conn = DBConnection.getConnection();
+    PreparedStatement ps = null;
+    try {
+      ps = conn.prepareStatement(sql);
+      ps.setString(1, name);
+      ps.setInt(2, teacher.getTeacherId());
+      ps.setInt(3, classOfStudents.getClassId());
+      ps.executeUpdate();
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
   }
 
   public void deleteClass(ClassOfStudents classOfStudents) {
-    executeInsertQuery("DELETE FROM class WHERE classId=" + classOfStudents.getClassId());
+
+    String sql = "delete from class where CLASSID = ?";
+    Connection conn = DBConnection.getConnection();
+    PreparedStatement ps = null;
+    try {
+      ps = conn.prepareStatement(sql);
+      ps.setInt(1, classOfStudents.getClassId());
+      ps.executeUpdate();
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
   }
 
   public ClassOfStudents getClassById(int classId) {
-    ResultSet result =
-        executeQueryBySqlString("select * from class where classId='" + classId + "'");
+
+    String sql = "select * from class where classid=?";
     Object[] element = new Object[3];
     try {
+      Connection conn = DBConnection.getConnection();
+      PreparedStatement ps = conn.prepareStatement(sql);
+      ps.setInt(1, classId);
+      ResultSet result = ps.executeQuery();
       ResultSetMetaData metaData = result.getMetaData();
       int columnCount = metaData.getColumnCount();
 
@@ -186,10 +236,14 @@ public class DataService {
   }
 
   public Subjects getSubjectById(int subjectId) {
-    ResultSet result =
-        executeQueryBySqlString("select * from subjects where subjectId='" + subjectId + "'");
+
+    String sql = "select * from subjects where subjectId=?";
     Object[] element = new Object[2];
     try {
+      Connection conn = DBConnection.getConnection();
+      PreparedStatement ps = conn.prepareStatement(sql);
+      ps.setInt(1, subjectId);
+      ResultSet result = ps.executeQuery();
       ResultSetMetaData metaData = result.getMetaData();
       int columnCount = metaData.getColumnCount();
 
@@ -208,27 +262,57 @@ public class DataService {
   }
 
   public void addSubject(String name) {
-    executeInsertQuery("insert into subjects (NAME) VALUES ('" + name + "');");
+
+    String sql = "insert into subjects (NAME) VALUES (?)";
+    Connection conn = DBConnection.getConnection();
+    PreparedStatement ps = null;
+    try {
+      ps = conn.prepareStatement(sql);
+      ps.setString(1, name);
+      ps.executeUpdate();
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
   }
 
   public void updateSubject(Subjects subjects) {
-    executeInsertQuery(
-        "update subjects set NAME='"
-            + subjects.getName()
-            + "'where subjectId="
-            + subjects.getSubjectId());
+
+    String sql = "update subjects set NAME = ? where subjectId = ?";
+    Connection conn = DBConnection.getConnection();
+    PreparedStatement ps = null;
+    try {
+      ps = conn.prepareStatement(sql);
+      ps.setString(1, subjects.getName());
+      ps.setInt(2, subjects.getSubjectId());
+      ps.executeUpdate();
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
   }
 
   public void deleteSubject(String name) {
     executeInsertQuery("DELETE FROM subjects WHERE name='" + name + "'");
+    String sql = "DELETE FROM subjects WHERE name=?";
+    Connection conn = DBConnection.getConnection();
+    PreparedStatement ps = null;
+    try {
+      ps = conn.prepareStatement(sql);
+      ps.setString(1, name);
+      ps.executeUpdate();
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
   }
 
   // STUDENT
   public Student getStudentById(int studentId) {
-    ResultSet result =
-        executeQueryBySqlString("select * from student where studentId='" + studentId + "'");
+    String sql = "select * from student where studentId=?";
     Object[] element = new Object[5];
     try {
+      Connection conn = DBConnection.getConnection();
+      PreparedStatement ps = conn.prepareStatement(sql);
+      ps.setInt(1, studentId);
+      ResultSet result = ps.executeQuery();
       ResultSetMetaData metaData = result.getMetaData();
       int columnCount = metaData.getColumnCount();
 
@@ -257,16 +341,19 @@ public class DataService {
       JTextField secondName,
       JTextField thirdName,
       ClassOfStudents classOfStudents) {
-    executeInsertQuery(
-        "insert into student (FIRSTNAME, SECONDNAME, THIRDNAME, CLASSID) VALUES ('"
-            + firstName.getText()
-            + "', '"
-            + secondName.getText()
-            + "', '"
-            + thirdName.getText()
-            + "', "
-            + classOfStudents.getClassId()
-            + ");");
+    String sql = "insert into student (FIRSTNAME, SECONDNAME, THIRDNAME, CLASSID) VALUES (?,?,?,?)";
+    Connection conn = DBConnection.getConnection();
+    PreparedStatement ps = null;
+    try {
+      ps = conn.prepareStatement(sql);
+      ps.setString(1, firstName.getText());
+      ps.setString(2, secondName.getText());
+      ps.setString(3, thirdName.getText());
+      ps.setInt(4, classOfStudents.getClassId());
+      ps.executeUpdate();
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
   }
 
   public void updateStudent(
@@ -275,21 +362,34 @@ public class DataService {
       JTextField thirdName,
       int classId,
       int studentId) {
-    executeInsertQuery(
-        "update student set FIRSTNAME='"
-            + firstName.getText()
-            + "', SECONDNAME='"
-            + secondName.getText()
-            + "', THIRDNAME='"
-            + thirdName.getText()
-            + "', ClassId="
-            + classId
-            + " where studentId="
-            + studentId);
+    String sql =
+        "update student set FIRSTNAME = ?, SECONDNAME = ?, THIRDNAME=?, CLASSID = ? where studentid=?";
+    Connection conn = DBConnection.getConnection();
+    PreparedStatement ps = null;
+    try {
+      ps = conn.prepareStatement(sql);
+      ps.setString(1, firstName.getText());
+      ps.setString(2, secondName.getText());
+      ps.setString(3, thirdName.getText());
+      ps.setInt(4, classId);
+      ps.setInt(5, studentId);
+      ps.executeUpdate();
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
   }
 
   public void deleteStudent(Student student) {
-    executeInsertQuery("DELETE FROM student WHERE studentId=" + student.getStudentId());
+    String sql = "DELETE FROM student WHERE studentid=?";
+    Connection conn = DBConnection.getConnection();
+    PreparedStatement ps = null;
+    try {
+      ps = conn.prepareStatement(sql);
+      ps.setInt(1, student.getStudentId());
+      ps.executeUpdate();
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
   }
 
   public ArrayList<Student> getAllStudentsByClassId(ClassOfStudents classOfStudents) {
@@ -324,9 +424,12 @@ public class DataService {
   // GRADE
   public ArrayList<Grade> getAllGradesByStudent(Student student) {
     ArrayList<Grade> gradeArrayList = new ArrayList<>();
-    ResultSet result =
-        executeQueryBySqlString("select * from grade where studentid=" + student.getStudentId());
+    String sql = "select * from grade where studentid=?";
     try {
+      Connection conn = DBConnection.getConnection();
+      PreparedStatement ps = conn.prepareStatement(sql);
+      ps.setInt(1, student.getStudentId());
+      ResultSet result = ps.executeQuery();
       ResultSetMetaData metaData = result.getMetaData();
       int columnCount = metaData.getColumnCount();
       int rowCount = 0;
@@ -350,40 +453,59 @@ public class DataService {
   }
 
   public void addGrade(float gradeValue, Subjects subjects, Student student) {
-    executeInsertQuery(
-        "insert into grade (GRADE_VALUE, STUDENTID, SUBJECTID) VALUES ("
-            + gradeValue
-            + ", "
-            + student.getStudentId()
-            + ", "
-            + subjects.getSubjectId()
-            + ");");
+    String sql = "insert into grade (GRADE_VALUE, STUDENTID, SUBJECTID) VALUES (?,?,?)";
+    Connection conn = DBConnection.getConnection();
+    PreparedStatement ps = null;
+    try {
+      ps = conn.prepareStatement(sql);
+      ps.setFloat(1, gradeValue);
+      ps.setInt(2, student.getStudentId());
+      ps.setInt(3, subjects.getSubjectId());
+      ps.executeUpdate();
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
   }
 
   public void updateGrade(Float gradeValue, int subjectId, int studentId, int gradeId) {
-    executeInsertQuery(
-        "update grade set GRADE_VALUE="
-            + gradeValue
-            + ", SUBJECTID="
-            + subjectId
-            + ", STUDENTID="
-            + studentId
-            + " where gradeid="
-            + gradeId);
+    String sql = "update grade set GRADE_VALUE = ?, SUBJECTID=?, STUDENTID=? where gradeid=?";
+    Connection conn = DBConnection.getConnection();
+    PreparedStatement ps = null;
+    try {
+      ps = conn.prepareStatement(sql);
+      ps.setFloat(1, gradeValue);
+      ps.setInt(2, subjectId);
+      ps.setInt(3, studentId);
+      ps.setInt(4, gradeId);
+      ps.executeUpdate();
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
   }
 
   public void deleteGrade(Grade grade) {
-    executeInsertQuery("DELETE FROM grade WHERE gradeId=" + grade.getGradeId());
+    String sql = "DELETE FROM grade WHERE gradeId=?";
+    Connection conn = DBConnection.getConnection();
+    PreparedStatement ps = null;
+    try {
+      ps = conn.prepareStatement(sql);
+      ps.setInt(1, grade.getGradeId());
+      ps.executeUpdate();
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
   }
 
   // SUBJECT CLASS
 
   public ArrayList<SubjectClass> getAllSubjectClass(ClassOfStudents classOfStudents) {
     ArrayList<SubjectClass> subjectClassArrayList = new ArrayList<>();
-    ResultSet result =
-        executeQueryBySqlString(
-            "select * from subject_class where classid=" + classOfStudents.getClassId());
+    String sql = "select * from subject_class where classid=?";
     try {
+      Connection conn = DBConnection.getConnection();
+      PreparedStatement ps = conn.prepareStatement(sql);
+      ps.setInt(1, classOfStudents.getClassId());
+      ResultSet result = ps.executeQuery();
       ResultSetMetaData metaData = result.getMetaData();
       int columnCount = metaData.getColumnCount();
       int rowCount = 0;
@@ -438,6 +560,7 @@ public class DataService {
                 + subjects.getSubjectId()
                 + " where subjectid is null");
     try {
+
       ResultSetMetaData metaData = result.getMetaData();
       int columnCount = metaData.getColumnCount();
       int rowCount = 0;
@@ -457,27 +580,46 @@ public class DataService {
   }
 
   public void addSubjectClass(Subjects subjects, ClassOfStudents classOfStudents) {
-    executeInsertQuery(
-        "insert into subject_class (SUBJECTID, CLASSID) VALUES ("
-            + subjects.getSubjectId()
-            + ", "
-            + classOfStudents.getClassId()
-            + ");");
+
+    String sql = "insert into subject_class (SUBJECTID, CLASSID) VALUES (?,?)";
+    Connection conn = DBConnection.getConnection();
+    PreparedStatement ps = null;
+    try {
+      ps = conn.prepareStatement(sql);
+      ps.setInt(1, subjects.getSubjectId());
+      ps.setInt(2, classOfStudents.getClassId());
+      ps.executeUpdate();
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
   }
 
   public void updateSubjectClass(SubjectClass subjectClass) {
-    executeInsertQuery(
-        "update subject_class set subjectId="
-            + subjectClass.getSubject().getSubjectId()
-            + ", ClassID="
-            + subjectClass.getClassId().getClassId()
-            + " where subjectclassid="
-            + subjectClass.getSubjectClassId());
+    String sql = "update subject_class set subjectId=?, classid=? where subjectclassid=?";
+    Connection conn = DBConnection.getConnection();
+    PreparedStatement ps = null;
+    try {
+      ps = conn.prepareStatement(sql);
+      ps.setInt(1, subjectClass.getSubject().getSubjectId());
+      ps.setInt(2, subjectClass.getClassId().getClassId());
+      ps.setInt(3, subjectClass.getSubjectClassId());
+      ps.executeUpdate();
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
   }
 
   public void deleteSubjectClass(SubjectClass subjectClass) {
-    executeInsertQuery(
-        "DELETE class subject_class WHERE subjectclassid=" + subjectClass.getSubjectClassId());
+    String sql = "DELETE class subject_class WHERE subjectclassid=?";
+    Connection conn = DBConnection.getConnection();
+    PreparedStatement ps = null;
+    try {
+      ps = conn.prepareStatement(sql);
+      ps.setInt(1, subjectClass.getSubjectClassId());
+      ps.executeUpdate();
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
   }
 
   // REPORT
@@ -531,10 +673,10 @@ public class DataService {
 
   private void executeInsertQuery(String sql) {
     Connection conn = DBConnection.getConnection();
-    Statement statement = null;
+    PreparedStatement statement = null;
     try {
-      statement = conn.createStatement();
-      statement.executeUpdate(sql);
+      statement = conn.prepareStatement(sql);
+      statement.executeUpdate();
     } catch (SQLException throwables) {
       throwables.printStackTrace();
     }
