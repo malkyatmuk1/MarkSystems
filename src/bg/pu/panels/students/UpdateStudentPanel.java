@@ -67,8 +67,8 @@ public class UpdateStudentPanel extends JPanel {
       className[i] = classOfStudentsArrayList.get(i).getName();
     }
     comboBox = new JComboBox(className);
-    // TODO not in the bounds if we deleted class because of the id!
-    comboBox.setSelectedIndex(student.getClassStudent().getClassId() - 1);
+    comboBox.setSelectedIndex(
+        getIndexOfTheClass(classOfStudentsArrayList, student.getClassStudent()));
     comboBox.setBounds(100, 100, 150, 40);
 
     gbc.gridx = 1;
@@ -116,5 +116,13 @@ public class UpdateStudentPanel extends JPanel {
           JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(UpdateStudentPanel.this);
           frame.dispose();
         });
+  }
+
+  private int getIndexOfTheClass(
+      ArrayList<ClassOfStudents> classOfStudentsArrayList, ClassOfStudents classOfStudents) {
+    for (int i = 0; i < classOfStudentsArrayList.size(); i++) {
+      if (classOfStudentsArrayList.get(i).getClassId() == classOfStudents.getClassId()) return i;
+    }
+    return 0;
   }
 }

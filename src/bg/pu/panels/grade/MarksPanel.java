@@ -81,6 +81,8 @@ public class MarksPanel extends JPanel {
         e -> {
           AddGradePage addGradePage = new AddGradePage();
           addGradePage.displayAddGradePage(student);
+          JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(MarksPanel.this);
+          frame.dispose();
         });
     returnBackButton.addActionListener(
         e -> {

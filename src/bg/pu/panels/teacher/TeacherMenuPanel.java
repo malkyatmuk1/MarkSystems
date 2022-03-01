@@ -9,7 +9,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class TeacherMenuPanel extends JPanel {
-  private JButton buttonGradeStudents = new JButton("View grades of the students");
   private JButton buttonUpdateTeacher = new JButton("Update teacher");
   private JButton buttonDeleteTeacher = new JButton("Delete teacher");
   private JButton returnBackButton = new JButton("Back");
@@ -22,18 +21,13 @@ public class TeacherMenuPanel extends JPanel {
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.gridx = 0;
     gbc.gridy = 0;
-    this.add(buttonGradeStudents, gbc);
+    this.add(buttonUpdateTeacher, gbc);
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.gridx = 0;
     gbc.gridy = 1;
-    this.add(buttonUpdateTeacher, gbc);
-    gbc.gridx = 0;
-    gbc.gridy = 2;
-    gbc.fill = GridBagConstraints.HORIZONTAL;
-    gbc.gridwidth = 2;
     this.add(buttonDeleteTeacher, gbc);
     gbc.gridx = 0;
-    gbc.gridy = 3;
+    gbc.gridy = 2;
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.gridwidth = 2;
     this.add(returnBackButton, gbc);
@@ -46,16 +40,11 @@ public class TeacherMenuPanel extends JPanel {
         });
     buttonDeleteTeacher.addActionListener(
         e -> {
-          // TODO ask if is the user is sure to delete the teacher
           dataService.deleteTeacher(teacher);
           FirstPage firstPage = new FirstPage();
           firstPage.displayFirstPage(dataService.getAllTeachers(), dataService.getAllClass());
           JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(TeacherMenuPanel.this);
           frame.dispose();
-        });
-    buttonGradeStudents.addActionListener(
-        e -> {
-          // TODO to the grade of students
         });
     returnBackButton.addActionListener(
         e -> {

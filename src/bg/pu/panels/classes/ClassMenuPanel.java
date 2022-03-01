@@ -48,7 +48,6 @@ public class ClassMenuPanel extends JPanel {
         });
     buttonDeleteClass.addActionListener(
         e -> {
-          // TODO ask if is the user is sure to delete the teacher
           dataService.deleteClass(classOfStudents);
           FirstPage firstPage = new FirstPage();
           firstPage.displayFirstPage(dataService.getAllTeachers(), dataService.getAllClass());

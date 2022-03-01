@@ -56,7 +56,8 @@ public class TeacherPickerPanel extends JPanel {
         e -> {
           TeacherMenuPage teacherMenuPAge = new TeacherMenuPage();
           teacherMenuPAge.displaySecondPage(
-              dataService.getTeacherById(comboBox.getSelectedIndex() + 1));
+              dataService.getTeacherById(
+                  teacherArrayList.get(comboBox.getSelectedIndex()).getTeacherId()));
           JFrame frame1 = (JFrame) SwingUtilities.getWindowAncestor(TeacherPickerPanel.this);
           frame1.dispose();
         });

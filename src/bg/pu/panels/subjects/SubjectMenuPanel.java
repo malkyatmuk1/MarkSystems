@@ -54,7 +54,6 @@ public class SubjectMenuPanel extends JPanel {
         });
     buttonDeleteSubject.addActionListener(
         e -> {
-          // TODO ask if is the user is sure to delete the subject
           dataService.deleteSubject(subject.getName());
           JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(SubjectMenuPanel.this);
           frame.dispose();

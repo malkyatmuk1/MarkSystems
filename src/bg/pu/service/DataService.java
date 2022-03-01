@@ -610,7 +610,7 @@ public class DataService {
   }
 
   public void deleteSubjectClass(SubjectClass subjectClass) {
-    String sql = "DELETE class subject_class WHERE subjectclassid=?";
+    String sql = "DELETE FROM subject_class WHERE SUBJECTCLASSID=?";
     Connection conn = DBConnection.getConnection();
     PreparedStatement ps = null;
     try {
