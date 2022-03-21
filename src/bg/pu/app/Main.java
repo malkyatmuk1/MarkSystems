@@ -7,6 +7,6 @@ public class Main {
   public static void main(String[] args) {
     DataService dataService = new DataService();
     FirstPage firstPage = new FirstPage();
-    firstPage.displayFirstPage(dataService.getAllTeachers(), dataService.getAllClass());
+    firstPage.displayFirstPage();
   }
 }

@@ -1,7 +1,6 @@
 package bg.pu.panels.teacher;
 
 import bg.pu.entity.Teacher;
-import bg.pu.frames.teacher.TeacherMenuPage;
 import bg.pu.service.DataService;
 
 import javax.swing.*;
@@ -17,21 +16,17 @@ public class UpdateTeacherPanel extends JPanel {
   private JTextField secondName = new JTextField("Write second name");
   private JTextField thirdName = new JTextField("Write third name");
   private JButton updateButton = new JButton("Update");
-  private JButton returnBackButton = new JButton("Back");
   DataService dataService = new DataService();
 
-  public UpdateTeacherPanel(Teacher teacher) {
-
+  public UpdateTeacherPanel(Teacher teacher, JPanel teacherPanel) {
+    title.setFont(new Font("Verdana", Font.ITALIC, 20));
+    this.add(title);
     firstName.setText(teacher.getFirstName());
     secondName.setText(teacher.getSecondName());
     thirdName.setText(teacher.getThirdName());
     GridBagLayout layout = new GridBagLayout();
     this.setLayout(layout);
     GridBagConstraints gbc = new GridBagConstraints();
-    gbc.fill = GridBagConstraints.HORIZONTAL;
-    gbc.gridx = 0;
-    gbc.gridy = 0;
-    this.add(title, gbc);
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.gridx = 1;
     gbc.gridy = 1;
@@ -62,28 +57,17 @@ public class UpdateTeacherPanel extends JPanel {
     gbc.weightx = 0.5;
     gbc.gridx = 0;
     gbc.gridy = 4;
-    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.fill = GridBagConstraints.CENTER;
     gbc.gridwidth = 0;
     this.add(updateButton, gbc);
-    gbc.gridx = 0;
-    gbc.gridy = 5;
-    gbc.fill = GridBagConstraints.HORIZONTAL;
-    gbc.gridwidth = 0;
-    this.add(returnBackButton, gbc);
     updateButton.addActionListener(
         e -> {
           dataService.updateTeacher(firstName, secondName, thirdName, teacher.getTeacherId());
-          TeacherMenuPage teacherMenuPage = new TeacherMenuPage();
-          teacherMenuPage.displaySecondPage(teacher);
-          JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(UpdateTeacherPanel.this);
-          frame.dispose();
-        });
-    returnBackButton.addActionListener(
-        e -> {
-          TeacherMenuPage teacherMenuPage = new TeacherMenuPage();
-          teacherMenuPage.displaySecondPage(teacher);
-          JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(UpdateTeacherPanel.this);
-          frame.dispose();
+          TeacherPanel teacherPanelNew = new TeacherPanel(0);
+          teacherPanel.removeAll();
+          teacherPanel.add(teacherPanelNew);
+          teacherPanel.revalidate();
+          teacherPanel.repaint();
         });
   }
 }

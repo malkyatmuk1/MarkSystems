@@ -37,7 +37,7 @@ public class ReportTablePanel extends JPanel {
     returnBackButton.addActionListener(
         e -> {
           FirstPage firstPage = new FirstPage();
-          firstPage.displayFirstPage(dataService.getAllTeachers(), dataService.getAllClass());
+          firstPage.displayFirstPage();
           JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(ReportTablePanel.this);
           frame.dispose();
         });

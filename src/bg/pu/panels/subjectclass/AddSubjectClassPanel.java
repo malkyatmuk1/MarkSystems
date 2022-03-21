@@ -61,7 +61,7 @@ public class AddSubjectClassPanel extends JPanel {
             frame.dispose();
             dataService.addSubjectClass(subject, classArrayList.get(comboBox.getSelectedIndex()));
             FirstPage firstPage = new FirstPage();
-            firstPage.displayFirstPage(dataService.getAllTeachers(), dataService.getAllClass());
+            firstPage.displayFirstPage();
           });
       returnBackButton.addActionListener(
           e -> {

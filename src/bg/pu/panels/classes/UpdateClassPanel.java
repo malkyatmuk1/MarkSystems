@@ -2,7 +2,6 @@ package bg.pu.panels.classes;
 
 import bg.pu.entity.ClassOfStudents;
 import bg.pu.entity.Teacher;
-import bg.pu.frames.classes.ClassMenuPage;
 import bg.pu.service.DataService;
 
 import javax.swing.*;
@@ -18,18 +17,16 @@ public class UpdateClassPanel extends JPanel {
   private JLabel teacherNameLabel = new JLabel("Teacher name");
   private JButton returnBackButton = new JButton("Back");
   private JComboBox comboBox;
+  private DataService dataService = new DataService();
 
-  public UpdateClassPanel(ClassOfStudents classOfStudents) {
-
-    classField.setText(classOfStudents.getName());
+  public UpdateClassPanel(ClassOfStudents classOfStudents, JPanel classPanel) {
+    title.setFont(new Font("Verdana", Font.ITALIC, 20));
+    this.add(title);
+    classField.setText(dataService.getClassById(classOfStudents.getClassId()).getName());
 
     GridBagLayout layout = new GridBagLayout();
     this.setLayout(layout);
     GridBagConstraints gbc = new GridBagConstraints();
-    gbc.fill = GridBagConstraints.HORIZONTAL;
-    gbc.gridx = 0;
-    gbc.gridy = 0;
-    this.add(title, gbc);
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.gridx = 1;
     gbc.gridy = 1;
@@ -54,7 +51,8 @@ public class UpdateClassPanel extends JPanel {
               + teacherArrayList.get(i).getThirdName();
     }
     comboBox = new JComboBox(teacherName);
-    comboBox.setSelectedItem(classOfStudents.getTeacher());
+    comboBox.setSelectedItem(
+        dataService.getClassById(classOfStudents.getClassId()).getTeacher().getFullName());
     this.add(comboBox, gbc);
     gbc.gridx = 0;
     gbc.gridy = 2;
@@ -62,31 +60,21 @@ public class UpdateClassPanel extends JPanel {
     gbc.gridx = 0;
     gbc.gridy = 3;
     gbc.gridwidth = 0;
-    gbc.fill = GridBagConstraints.HORIZONTAL;
-    this.add(addButton, gbc);
-    gbc.gridx = 0;
-    gbc.gridy = 4;
+    gbc.fill = GridBagConstraints.CENTER;
     gbc.gridwidth = 0;
-    gbc.fill = GridBagConstraints.HORIZONTAL;
-    this.add(returnBackButton, gbc);
+    this.add(addButton, gbc);
 
     addButton.addActionListener(
         e -> {
           dataService.updateClass(
-              classOfStudents,
+              dataService.getClassById(classOfStudents.getClassId()),
               classField.getText(),
               teacherArrayList.get(comboBox.getSelectedIndex()));
-          ClassMenuPage classMenuPage = new ClassMenuPage();
-          classMenuPage.displayClassMenuPage(classOfStudents);
-          JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(UpdateClassPanel.this);
-          frame.dispose();
-        });
-    returnBackButton.addActionListener(
-        e -> {
-          ClassMenuPage classMenuPage = new ClassMenuPage();
-          classMenuPage.displayClassMenuPage(classOfStudents);
-          JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(UpdateClassPanel.this);
-          frame.dispose();
+          ClassPanel classPanelNew = new ClassPanel(0);
+          classPanel.removeAll();
+          classPanel.add(classPanelNew);
+          classPanel.revalidate();
+          classPanel.repaint();
         });
   }
 }

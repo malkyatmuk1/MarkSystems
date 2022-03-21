@@ -47,14 +47,14 @@ public class AddSubjectPanel extends JPanel {
           e -> {
             dataService.addSubject(subjectField.getText());
             FirstPage firstPage = new FirstPage();
-            firstPage.displayFirstPage(dataService.getAllTeachers(), dataService.getAllClass());
+            firstPage.displayFirstPage();
             JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(AddSubjectPanel.this);
             frame.dispose();
           });
       returnBackButton.addActionListener(
           e -> {
             FirstPage firstPage = new FirstPage();
-            firstPage.displayFirstPage(dataService.getAllTeachers(), dataService.getAllClass());
+            firstPage.displayFirstPage();
             JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(AddSubjectPanel.this);
             frame.dispose();
           });

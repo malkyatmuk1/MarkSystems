@@ -49,7 +49,7 @@ public class UpdateSubjectPanel extends JPanel {
           subject.setName(subjectField.getText());
           dataService.updateSubject(subject);
           FirstPage firstPage = new FirstPage();
-          firstPage.displayFirstPage(dataService.getAllTeachers(), dataService.getAllClass());
+          firstPage.displayFirstPage();
           JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(UpdateSubjectPanel.this);
           frame.dispose();
         });

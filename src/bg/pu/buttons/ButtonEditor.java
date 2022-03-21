@@ -1,13 +1,13 @@
 package bg.pu.buttons;
 
-import bg.pu.entity.Grade;
-import bg.pu.entity.Student;
-import bg.pu.entity.SubjectClass;
+import bg.pu.entity.*;
 import bg.pu.frames.grade.GradeTablePage;
 import bg.pu.frames.grade.UpdateGradePage;
 import bg.pu.frames.students.UpdateStudentPage;
 import bg.pu.frames.subjectclass.UpdateSubjectClassPage;
 import bg.pu.frames.teacher.FirstPage;
+import bg.pu.panels.classes.ClassPanel;
+import bg.pu.panels.teacher.TeacherPanel;
 import bg.pu.service.DataService;
 
 import javax.swing.*;
@@ -22,6 +22,8 @@ public class ButtonEditor extends DefaultCellEditor {
   private ArrayList<Student> studentArrayList;
   private ArrayList<Grade> gradeArrayList;
   private ArrayList<SubjectClass> subjectClassArrayList;
+  private ArrayList<Teacher> teacherArrayList;
+  private ArrayList<ClassOfStudents> classOfStudentsArrayList;
   DataService dataService = new DataService();
   JPanel jPanel;
 
@@ -60,6 +62,30 @@ public class ButtonEditor extends DefaultCellEditor {
     btn.addActionListener(e -> fireEditingStopped());
   }
 
+  public ButtonEditor(
+      JTextField txt, ArrayList<Teacher> teacherArrayList, JPanel jPanel, boolean isTeacher) {
+    super(txt);
+
+    btn = new JButton();
+    btn.setOpaque(true);
+    this.jPanel = jPanel;
+    this.teacherArrayList = teacherArrayList;
+
+    btn.addActionListener(e -> fireEditingStopped());
+  }
+
+  public ButtonEditor(
+      JTextField txt, ArrayList<ClassOfStudents> classOfStudentsArrayList, ClassPanel jPanel) {
+    super(txt);
+
+    btn = new JButton();
+    btn.setOpaque(true);
+    this.jPanel = jPanel;
+    this.classOfStudentsArrayList = classOfStudentsArrayList;
+
+    btn.addActionListener(e -> fireEditingStopped());
+  }
+
   @Override
   public Component getTableCellEditorComponent(
       JTable table, Object obj, boolean selected, int row, int col) {
@@ -83,7 +109,7 @@ public class ButtonEditor extends DefaultCellEditor {
       } else if (lbl.equals("Delete student")) {
         dataService.deleteStudent(this.studentArrayList.get(id));
         FirstPage firstPage = new FirstPage();
-        firstPage.displayFirstPage(dataService.getAllTeachers(), dataService.getAllClass());
+        firstPage.displayFirstPage();
         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(jPanel);
         frame.dispose();
       } else if (lbl.equals("Update student")) {
@@ -97,7 +123,7 @@ public class ButtonEditor extends DefaultCellEditor {
       } else if (lbl.equals("Delete grade")) {
         dataService.deleteGrade(this.gradeArrayList.get(id));
         FirstPage firstPage = new FirstPage();
-        firstPage.displayFirstPage(dataService.getAllTeachers(), dataService.getAllClass());
+        firstPage.displayFirstPage();
         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(jPanel);
         frame.dispose();
       } else if (lbl.equals("Update subject class")) {
@@ -108,9 +134,35 @@ public class ButtonEditor extends DefaultCellEditor {
       } else if (lbl.equals("Delete subject class")) {
         dataService.deleteSubjectClass(this.subjectClassArrayList.get(id));
         FirstPage firstPage = new FirstPage();
-        firstPage.displayFirstPage(dataService.getAllTeachers(), dataService.getAllClass());
+        firstPage.displayFirstPage();
         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(jPanel);
         frame.dispose();
+      } else if (lbl.equals("Update teacher")) {
+        TeacherPanel teacherPanel = new TeacherPanel(id);
+        jPanel.removeAll();
+        jPanel.add(teacherPanel);
+        jPanel.revalidate();
+        jPanel.repaint();
+      } else if (lbl.equals("Delete teacher")) {
+        dataService.deleteTeacher(this.teacherArrayList.get(id));
+        TeacherPanel teacherPanel = new TeacherPanel(0);
+        jPanel.removeAll();
+        jPanel.add(teacherPanel);
+        jPanel.revalidate();
+        jPanel.repaint();
+      } else if (lbl.equals("Update class")) {
+        ClassPanel classPanel = new ClassPanel(id);
+        jPanel.removeAll();
+        jPanel.add(classPanel);
+        jPanel.revalidate();
+        jPanel.repaint();
+      } else if (lbl.equals("Delete class")) {
+        dataService.deleteClass(this.classOfStudentsArrayList.get(id));
+        ClassPanel classPanel = new ClassPanel(0);
+        jPanel.removeAll();
+        jPanel.add(classPanel);
+        jPanel.revalidate();
+        jPanel.repaint();
       }
     }
     clicked = false;

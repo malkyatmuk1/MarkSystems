@@ -42,6 +42,10 @@ public class Teacher {
     this.thirdName = thirdName;
   }
 
+  public String getFullName() {
+    return this.firstName + " " + this.secondName + " " + this.thirdName;
+  }
+
   @Override
   public String toString() {
     return "bg.pu.entity.Teacher{"

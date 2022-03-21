@@ -58,12 +58,12 @@ public class SubjectMenuPanel extends JPanel {
           JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(SubjectMenuPanel.this);
           frame.dispose();
           FirstPage firstPage = new FirstPage();
-          firstPage.displayFirstPage(dataService.getAllTeachers(), dataService.getAllClass());
+          firstPage.displayFirstPage();
         });
     returnBackButton.addActionListener(
         e -> {
           FirstPage firstPage = new FirstPage();
-          firstPage.displayFirstPage(dataService.getAllTeachers(), dataService.getAllClass());
+          firstPage.displayFirstPage();
           JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(SubjectMenuPanel.this);
           frame.dispose();
         });
