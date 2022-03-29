@@ -1,11 +1,11 @@
 package bg.pu.panels.students;
 
+import bg.pu.TabbedPane;
 import bg.pu.buttons.ButtonEditor;
 import bg.pu.buttons.ButtonRenderer;
 import bg.pu.entity.ClassOfStudents;
 import bg.pu.entity.Student;
-import bg.pu.frames.classes.ClassMenuPage;
-import bg.pu.frames.students.AddStudentPage;
+import bg.pu.panels.grade.MarksPanel;
 import bg.pu.service.DataService;
 
 import javax.swing.*;
@@ -16,13 +16,27 @@ public class StudentsTablePanel extends JPanel {
   DataService dataService = new DataService();
 
   JTable jtable;
+  JLabel jLabel;
   String[] columnName = {"Name", "View marks", "Delete student", "Update student"};
-  private JButton buttonAddStudent = new JButton("Add Student");
-  private JButton returnBackButton = new JButton("Back");
+  private JComboBox comboBoxClass = new JComboBox();
 
-  public StudentsTablePanel(ClassOfStudents classOfStudents) {
+  public StudentsTablePanel(
+      StudentsPanel jpanel, int updateIndexClass, TabbedPane tabbedPane, MarksPanel marksPanel) {
+    jLabel = new JLabel("All students");
+    jLabel.setFont(new Font("Verdana", Font.ITALIC, 20));
+    this.add(jLabel);
+    ArrayList<ClassOfStudents> classArrayList = dataService.getAllClass();
+    String[] className = new String[classArrayList.size()];
+    for (int i = 0; i < classArrayList.size(); i++) {
+      className[i] = classArrayList.get(i).getName();
+    }
+    comboBoxClass = new JComboBox(className);
+    comboBoxClass.setBounds(100, 100, 150, 40);
+    comboBoxClass.setSelectedIndex(updateIndexClass);
     GridBagLayout layout = new GridBagLayout();
     this.setLayout(layout);
+    ClassOfStudents classOfStudents =
+        dataService.getAllClass().get(comboBoxClass.getSelectedIndex());
     ArrayList<Student> studentArrayList = dataService.getAllStudentsByClassId(classOfStudents);
     Object[][] data = new Object[studentArrayList.size()][4];
     for (int i = 0; i < studentArrayList.size(); i++) {
@@ -43,21 +57,41 @@ public class StudentsTablePanel extends JPanel {
     jtable
         .getColumnModel()
         .getColumn(1)
-        .setCellEditor(new ButtonEditor(new JTextField(), studentArrayList, this));
+        .setCellEditor(
+            new ButtonEditor(
+                new JTextField(),
+                studentArrayList,
+                jpanel,
+                tabbedPane,
+                marksPanel,
+                comboBoxClass.getSelectedIndex()));
     jtable.getColumnModel().getColumn(2).setCellRenderer(new ButtonRenderer());
 
     jtable
         .getColumnModel()
         .getColumn(2)
-        .setCellEditor(new ButtonEditor(new JTextField(), studentArrayList, this));
+        .setCellEditor(
+            new ButtonEditor(
+                new JTextField(),
+                studentArrayList,
+                jpanel,
+                tabbedPane,
+                marksPanel,
+                comboBoxClass.getSelectedIndex()));
     jtable.getColumnModel().getColumn(3).setCellRenderer(new ButtonRenderer());
 
     jtable
         .getColumnModel()
         .getColumn(3)
-        .setCellEditor(new ButtonEditor(new JTextField(), studentArrayList, this));
+        .setCellEditor(
+            new ButtonEditor(
+                new JTextField(),
+                studentArrayList,
+                jpanel,
+                tabbedPane,
+                marksPanel,
+                comboBoxClass.getSelectedIndex()));
 
-    JScrollPane pane = new JScrollPane(jtable);
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.gridx = 0;
     gbc.gridy = 0;
@@ -65,34 +99,17 @@ public class StudentsTablePanel extends JPanel {
     gbc.weightx = 1;
     gbc.weighty = 1;
     gbc.fill = GridBagConstraints.BOTH;
-    this.add(pane, gbc);
-    gbc.fill = GridBagConstraints.HORIZONTAL;
-    gbc.gridwidth = 2;
-    gbc.gridx = 0;
-    gbc.gridy = 1;
-    gbc.weightx = 0.5;
-    gbc.weightx = 0;
-    gbc.weighty = 0;
-    this.add(buttonAddStudent, gbc);
-    gbc.fill = GridBagConstraints.HORIZONTAL;
-    gbc.gridx = 0;
-    gbc.gridy = 2;
-    gbc.gridwidth = 2;
-    this.add(returnBackButton, gbc);
-
-    buttonAddStudent.addActionListener(
+    this.add(comboBoxClass, gbc);
+    this.add(jtable);
+    setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+    comboBoxClass.addActionListener(
         e -> {
-          AddStudentPage addStudentPage = new AddStudentPage();
-          addStudentPage.displayAddStudentPage(classOfStudents);
-          JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(StudentsTablePanel.this);
-          frame.dispose();
-        });
-    returnBackButton.addActionListener(
-        e -> {
-          ClassMenuPage classMenuPage = new ClassMenuPage();
-          classMenuPage.displayClassMenuPage(classOfStudents);
-          JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(StudentsTablePanel.this);
-          frame.dispose();
+          StudentsPanel studentsPanelNew =
+              new StudentsPanel(comboBoxClass.getSelectedIndex(), tabbedPane, marksPanel, 0);
+          jpanel.removeAll();
+          jpanel.add(studentsPanelNew);
+          jpanel.revalidate();
+          jpanel.repaint();
         });
   }
 }

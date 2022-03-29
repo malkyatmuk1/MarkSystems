@@ -1,8 +1,9 @@
 package bg.pu.panels.students;
 
+import bg.pu.TabbedPane;
 import bg.pu.entity.ClassOfStudents;
 import bg.pu.entity.Student;
-import bg.pu.frames.students.StudentClassPage;
+import bg.pu.panels.grade.MarksPanel;
 import bg.pu.service.DataService;
 
 import javax.swing.*;
@@ -20,22 +21,21 @@ public class UpdateStudentPanel extends JPanel {
   private JTextField secondName = new JTextField("Write second name");
   private JTextField thirdName = new JTextField("Write third name");
   private JButton addButton = new JButton("Update");
-  private JButton returnBackButton = new JButton("Back");
   DataService dataService = new DataService();
   private JComboBox comboBox;
 
-  public UpdateStudentPanel(Student student) {
+  public UpdateStudentPanel(
+      Student student, StudentsPanel jpanel, TabbedPane tabbedPane, MarksPanel marksPanel) {
 
+    title = new JLabel("Update student");
+    title.setFont(new Font("Verdana", Font.ITALIC, 20));
+    this.add(title);
     firstName.setText(student.getFirstName());
     secondName.setText(student.getSecondName());
     thirdName.setText(student.getThirdName());
     GridBagLayout layout = new GridBagLayout();
     this.setLayout(layout);
     GridBagConstraints gbc = new GridBagConstraints();
-    gbc.fill = GridBagConstraints.HORIZONTAL;
-    gbc.gridx = 0;
-    gbc.gridy = 0;
-    this.add(title, gbc);
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.gridx = 1;
     gbc.gridy = 1;
@@ -85,14 +85,10 @@ public class UpdateStudentPanel extends JPanel {
     gbc.weightx = 0.5;
     gbc.gridx = 0;
     gbc.gridy = 6;
-    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.fill = GridBagConstraints.CENTER;
     gbc.gridwidth = 0;
     this.add(addButton, gbc);
-    gbc.gridx = 0;
-    gbc.gridy = 7;
-    gbc.fill = GridBagConstraints.HORIZONTAL;
-    gbc.gridwidth = 0;
-    this.add(returnBackButton, gbc);
+
     addButton.addActionListener(
         e -> {
           dataService.updateStudent(
@@ -101,20 +97,12 @@ public class UpdateStudentPanel extends JPanel {
               thirdName,
               classOfStudentsArrayList.get(comboBox.getSelectedIndex()).getClassId(),
               student.getStudentId());
-
-          StudentClassPage studentClassPage = new StudentClassPage();
-          studentClassPage.displayStudentClassPage(
-              classOfStudentsArrayList.get(comboBox.getSelectedIndex()));
-          JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(UpdateStudentPanel.this);
-          frame.dispose();
-        });
-    returnBackButton.addActionListener(
-        e -> {
-          StudentClassPage studentClassPage = new StudentClassPage();
-          studentClassPage.displayStudentClassPage(
-              classOfStudentsArrayList.get(comboBox.getSelectedIndex()));
-          JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(UpdateStudentPanel.this);
-          frame.dispose();
+          StudentsPanel studentsPanelNew =
+              new StudentsPanel(comboBox.getSelectedIndex(), tabbedPane, marksPanel, 0);
+          jpanel.removeAll();
+          jpanel.add(studentsPanelNew);
+          jpanel.revalidate();
+          jpanel.repaint();
         });
   }
 

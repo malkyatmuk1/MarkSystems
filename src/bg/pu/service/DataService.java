@@ -336,6 +336,33 @@ public class DataService {
     return student;
   }
 
+  public ArrayList<Student> getAllStudents() {
+    ArrayList<Student> studentArrayList = new ArrayList<>();
+    ResultSet result = executeQueryBySqlString("select * from student");
+    try {
+      ResultSetMetaData metaData = result.getMetaData();
+      int columnCount = metaData.getColumnCount();
+      int rowCount = 0;
+      while (result.next()) {
+        Object[] elements = new Object[columnCount];
+        for (int j = 0; j < columnCount; j++) {
+          elements[j] = result.getObject(j + 1);
+        }
+        studentArrayList.add(
+            new Student(
+                Integer.parseInt(elements[0].toString()),
+                elements[1].toString(),
+                elements[2].toString(),
+                elements[3].toString(),
+                getClassById(Integer.parseInt(elements[4].toString()))));
+        rowCount++;
+      }
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
+    return studentArrayList;
+  }
+
   public void addStudent(
       JTextField firstName,
       JTextField secondName,
@@ -623,11 +650,15 @@ public class DataService {
   }
 
   // REPORT
-  public ArrayList<StudentWithGrade> getReportForAStudents() {
+  public ArrayList<StudentWithGrade> getReportForAStudents(
+      ClassOfStudents classOfStudents, float gradeValue) {
     ArrayList<StudentWithGrade> subjectClassArrayList = new ArrayList<>();
     ResultSet result =
         executeQueryBySqlString(
-            "select b.*, a.grade_value, a.subjectId from grade a inner join student b on (a.grade_value = 6.0 and a.studentid = b.studentid) where classid = 1");
+            "select b.*, a.grade_value, a.subjectId from grade a inner join student b on (a.grade_value = "
+                + gradeValue
+                + " and a.studentid = b.studentid) where classid = "
+                + classOfStudents.getClassId());
     try {
       ResultSetMetaData metaData = result.getMetaData();
       int columnCount = metaData.getColumnCount();

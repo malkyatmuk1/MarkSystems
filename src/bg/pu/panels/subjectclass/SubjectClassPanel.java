@@ -1,33 +1,39 @@
 package bg.pu.panels.subjectclass;
 
-import bg.pu.frames.subjectclass.SubjectClassTablePage;
+import bg.pu.entity.ClassOfStudents;
+import bg.pu.entity.Subjects;
+import bg.pu.service.DataService;
 
 import javax.swing.*;
-import java.awt.*;
+import java.util.ArrayList;
 
 public class SubjectClassPanel extends JPanel {
-    private JLabel firstLable = new JLabel("Manage subject to class");
-    private JButton buttonAddSubject = new JButton("Subject to class");
+  private JLabel firstLable = new JLabel("Manage subject to class");
+  private JButton buttonAddSubject = new JButton("Subject to class");
+  DataService dataService = new DataService();
 
-    public SubjectClassPanel(){
-        GridBagLayout layout = new GridBagLayout();
-        this.setLayout(layout);
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        this.add(firstLable, gbc);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.ipady = 20;
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        this.add(buttonAddSubject, gbc);
-        buttonAddSubject.addActionListener(e -> {
-            SubjectClassTablePage subjectClassTablePage = new SubjectClassTablePage();
-            subjectClassTablePage.displaySubjectClassTablePage();
-            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(SubjectClassPanel.this);
-            frame.dispose();
-        });
+  public SubjectClassPanel(int updateIndex, int addClassIndex, int addSubjectIndex) {
+    UpdateSubjectClassPanel updateSubjectClassPanel =
+        new UpdateSubjectClassPanel(dataService.getAllSubjectClass().get(updateIndex), this);
+    SubjectClassTablePanel subjectClassTablePanel = new SubjectClassTablePanel(this);
+    this.add(subjectClassTablePanel);
+    this.add(updateSubjectClassPanel);
+    this.add(new AddSubjectClassPanel(this, addSubjectIndex, addClassIndex));
 
+    setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+  }
+
+  private int getIndexOfClass(ArrayList<ClassOfStudents> arrayList, int indexClass) {
+    for (int i = 0; i < arrayList.size(); i++) {
+      if (arrayList.get(i).getClassId() == indexClass) return i;
     }
+    return -1;
+  }
+
+  private int getIndexOfSubject(ArrayList<Subjects> arrayList, int indexSubjects) {
+    for (int i = 0; i < arrayList.size(); i++) {
+      if (arrayList.get(i).getSubjectId() == indexSubjects) return i;
+    }
+    return -1;
+  }
 }

@@ -3,7 +3,6 @@ package bg.pu.panels.subjectclass;
 import bg.pu.buttons.ButtonEditor;
 import bg.pu.buttons.ButtonRenderer;
 import bg.pu.entity.SubjectClass;
-import bg.pu.frames.teacher.FirstPage;
 import bg.pu.service.DataService;
 
 import javax.swing.*;
@@ -14,13 +13,16 @@ public class SubjectClassTablePanel extends JPanel {
   DataService dataService = new DataService();
 
   JTable jtable;
+  JLabel jLabel;
   String[] columnName = {"Subject name", "Class", "Update subject class ", "Delete subject class"};
   private JButton buttonAddStudent = new JButton("Update subject class");
   private JButton returnBackButton = new JButton("Back");
 
-  public SubjectClassTablePanel() {
-    BorderLayout layout = new BorderLayout();
-    this.setLayout(layout);
+  public SubjectClassTablePanel(SubjectClassPanel jpanel) {
+
+    jLabel = new JLabel("All subjects");
+    jLabel.setFont(new Font("Verdana", Font.ITALIC, 20));
+    this.add(jLabel);
     ArrayList<SubjectClass> subjectClassArrayList = dataService.getAllSubjectClass();
     Object[][] data = new Object[subjectClassArrayList.size()][4];
     for (int i = 0; i < subjectClassArrayList.size(); i++) {
@@ -36,22 +38,14 @@ public class SubjectClassTablePanel extends JPanel {
     jtable
         .getColumnModel()
         .getColumn(2)
-        .setCellEditor(new ButtonEditor(new JTextField(), subjectClassArrayList, 1, this));
+        .setCellEditor(new ButtonEditor(new JTextField(), subjectClassArrayList, 1, jpanel));
     jtable.getColumnModel().getColumn(3).setCellRenderer(new ButtonRenderer());
 
     jtable
         .getColumnModel()
         .getColumn(3)
-        .setCellEditor(new ButtonEditor(new JTextField(), subjectClassArrayList, 1, this));
-    JScrollPane pane = new JScrollPane(jtable);
-    this.add(pane, BorderLayout.CENTER);
-    this.add(returnBackButton, BorderLayout.PAGE_END);
-    returnBackButton.addActionListener(
-        e -> {
-          FirstPage firstPage = new FirstPage();
-          firstPage.displayFirstPage();
-          JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(SubjectClassTablePanel.this);
-          frame.dispose();
-        });
+        .setCellEditor(new ButtonEditor(new JTextField(), subjectClassArrayList, 1, jpanel));
+    this.add(jtable);
+    setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
   }
 }
