@@ -12,13 +12,7 @@ public class StudentsPanel extends JPanel {
   public StudentsPanel(
       int updateIndexClass, TabbedPane tabbedPane, MarksPanel marksPanel, int studentIndex) {
     UpdateStudentPanel updateStudentPanel =
-        new UpdateStudentPanel(
-            dataService
-                .getAllStudentsByClassId(dataService.getAllClass().get(updateIndexClass))
-                .get(studentIndex),
-            this,
-            tabbedPane,
-            marksPanel);
+        new UpdateStudentPanel(updateIndexClass, studentIndex, this, tabbedPane, marksPanel);
     StudentsTablePanel tablePanel =
         new StudentsTablePanel(this, updateIndexClass, tabbedPane, marksPanel);
     this.add(tablePanel);

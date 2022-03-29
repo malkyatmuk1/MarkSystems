@@ -64,10 +64,7 @@ public class UpdateSubjectClassPanel extends JPanel {
               classArrayList.get(
                   getIndexOfTheClass(
                       classArrayList,
-                      dataService
-                          .getAllClass()
-                          .get(comboBoxClass.getSelectedIndex())
-                          .getClassId())));
+                      classArrayList.get(comboBoxClass.getSelectedIndex()).getClassId())));
           dataService.updateSubjectClass(subjectClass);
           SubjectClassPanel subjectClassPanelNew = new SubjectClassPanel(0, 0, 0);
 

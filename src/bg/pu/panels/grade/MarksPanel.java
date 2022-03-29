@@ -9,8 +9,8 @@ public class MarksPanel extends JPanel {
   private DataService dataService = new DataService();
   Student student;
 
-  public MarksPanel(Student student) {
-    UpdateGradePanel updateGradePanel = new UpdateGradePanel(student, this);
+  public MarksPanel(Student student, int updateIndex) {
+    UpdateGradePanel updateGradePanel = new UpdateGradePanel(student, this, updateIndex);
     MarkTablePanel markTablePanel = new MarkTablePanel(student, this);
     this.add(new ChooseStudentMarkPanel(student.getStudentId(), this));
     this.add(markTablePanel);

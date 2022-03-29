@@ -21,7 +21,7 @@ public class FirstPage extends JFrame {
   public void displayFirstPage() {
     TabbedPane tabbedPane = new TabbedPane(1);
     MarksPanel marksPanel =
-        new MarksPanel(dataService.getStudentById(tabbedPane.getIndexStudent()));
+        new MarksPanel(dataService.getStudentById(tabbedPane.getIndexStudent()), 0);
     tabbedPane.add("Teachers", new TeacherPanel(0));
     tabbedPane.add("Classes", new ClassPanel(0));
     tabbedPane.add("Subject", new SubjectPanel(0));
@@ -40,6 +40,8 @@ public class FirstPage extends JFrame {
           public void mouseClicked(MouseEvent e) {
             int selectedIndex = tabbedPane.getSelectedIndex();
             System.out.println(selectedIndex);
+            MarksPanel marksPanel =
+                new MarksPanel(dataService.getStudentById(tabbedPane.getIndexStudent()), 0);
             tabbedPane.removeAll();
             tabbedPane.revalidate();
             tabbedPane.add("Teachers", new TeacherPanel(0));
@@ -54,28 +56,16 @@ public class FirstPage extends JFrame {
           }
 
           @Override
-          public void mousePressed(MouseEvent e) {
-            // TODO Auto-generated method stub
-
-          }
+          public void mousePressed(MouseEvent e) {}
 
           @Override
-          public void mouseReleased(MouseEvent e) {
-            // TODO Auto-generated method stub
-
-          }
+          public void mouseReleased(MouseEvent e) {}
 
           @Override
-          public void mouseEntered(MouseEvent e) {
-            // TODO Auto-generated method stub
-
-          }
+          public void mouseEntered(MouseEvent e) {}
 
           @Override
-          public void mouseExited(MouseEvent e) {
-            // TODO Auto-generated method stub
-
-          }
+          public void mouseExited(MouseEvent e) {}
         });
   }
 }

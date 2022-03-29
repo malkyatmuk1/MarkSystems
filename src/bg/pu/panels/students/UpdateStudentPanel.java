@@ -25,14 +25,46 @@ public class UpdateStudentPanel extends JPanel {
   private JComboBox comboBox;
 
   public UpdateStudentPanel(
-      Student student, StudentsPanel jpanel, TabbedPane tabbedPane, MarksPanel marksPanel) {
+      int updateIndexClass,
+      int studentIndex,
+      StudentsPanel jpanel,
+      TabbedPane tabbedPane,
+      MarksPanel marksPanel) {
+    Student student;
+    ArrayList<ClassOfStudents> classOfStudentsArrayList = dataService.getAllClass();
+    if (dataService.getAllStudentsByClassId(dataService.getAllClass().get(updateIndexClass)).size()
+        != 0) {
+      student =
+          dataService
+              .getAllStudentsByClassId(dataService.getAllClass().get(updateIndexClass))
+              .get(studentIndex);
+      firstName.setText(student.getFirstName());
+      secondName.setText(student.getSecondName());
+      thirdName.setText(student.getThirdName());
 
+      String[] className = new String[classOfStudentsArrayList.size()];
+      for (int i = 0; i < classOfStudentsArrayList.size(); i++) {
+        className[i] = classOfStudentsArrayList.get(i).getName();
+      }
+      comboBox = new JComboBox(className);
+
+      comboBox.setSelectedIndex(
+          getIndexOfTheClass(classOfStudentsArrayList, student.getClassStudent()));
+    } else {
+      addButton.setEnabled(false);
+      String[] className = new String[1];
+      className[0] = "-";
+      comboBox = new JComboBox(className);
+      comboBox.setEnabled(false);
+      firstName.setEnabled(false);
+      secondName.setEnabled(false);
+      thirdName.setEnabled(false);
+      student = dataService.getAllStudents().get(0);
+    }
     title = new JLabel("Update student");
     title.setFont(new Font("Verdana", Font.ITALIC, 20));
     this.add(title);
-    firstName.setText(student.getFirstName());
-    secondName.setText(student.getSecondName());
-    thirdName.setText(student.getThirdName());
+
     GridBagLayout layout = new GridBagLayout();
     this.setLayout(layout);
     GridBagConstraints gbc = new GridBagConstraints();
@@ -61,14 +93,7 @@ public class UpdateStudentPanel extends JPanel {
     gbc.gridy = 3;
     gbc.weightx = 0;
     this.add(teacherThirdName, gbc);
-    ArrayList<ClassOfStudents> classOfStudentsArrayList = dataService.getAllClass();
-    String[] className = new String[classOfStudentsArrayList.size()];
-    for (int i = 0; i < classOfStudentsArrayList.size(); i++) {
-      className[i] = classOfStudentsArrayList.get(i).getName();
-    }
-    comboBox = new JComboBox(className);
-    comboBox.setSelectedIndex(
-        getIndexOfTheClass(classOfStudentsArrayList, student.getClassStudent()));
+
     comboBox.setBounds(100, 100, 150, 40);
 
     gbc.gridx = 1;

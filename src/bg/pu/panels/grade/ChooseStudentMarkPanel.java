@@ -24,7 +24,7 @@ public class ChooseStudentMarkPanel extends JPanel {
     allStudents.addActionListener(
         e -> {
           MarksPanel marksPanelNew =
-              new MarksPanel(dataService.getAllStudents().get(allStudents.getSelectedIndex()));
+              new MarksPanel(dataService.getAllStudents().get(allStudents.getSelectedIndex()), 0);
 
           marksPanel.removeAll();
           marksPanel.add(marksPanelNew);

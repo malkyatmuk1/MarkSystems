@@ -2,7 +2,6 @@ package bg.pu.buttons;
 
 import bg.pu.TabbedPane;
 import bg.pu.entity.*;
-import bg.pu.frames.grade.UpdateGradePage;
 import bg.pu.panels.classes.ClassPanel;
 import bg.pu.panels.grade.MarksPanel;
 import bg.pu.panels.students.StudentsPanel;
@@ -131,7 +130,7 @@ public class ButtonEditor extends DefaultCellEditor {
       if (lbl.equals("View marks")) {
         tabbedPane.setIndexStudent(this.studentArrayList.get(id).getStudentId());
         marksPanel.setStudent(dataService.getStudentById(tabbedPane.getIndexStudent()));
-        MarksPanel marksPanelNew = new MarksPanel(marksPanel.getStudent());
+        MarksPanel marksPanelNew = new MarksPanel(marksPanel.getStudent(), id);
         marksPanel.removeAll();
         marksPanel.add(marksPanelNew);
         marksPanel.revalidate();
@@ -153,24 +152,19 @@ public class ButtonEditor extends DefaultCellEditor {
         jPanel.revalidate();
         jPanel.repaint();
       } else if (lbl.equals("Update grade")) {
-        new UpdateGradePage().displayUpdateGradePage(this.gradeArrayList.get(id));
-        MarksPanel marksPanel = new MarksPanel(student);
+        MarksPanel marksPanel = new MarksPanel(student, id);
         jPanel.removeAll();
         jPanel.add(marksPanel);
         jPanel.revalidate();
         jPanel.repaint();
       } else if (lbl.equals("Delete grade")) {
         dataService.deleteGrade(this.gradeArrayList.get(id));
-        MarksPanel marksPanel = new MarksPanel(student);
+        MarksPanel marksPanel = new MarksPanel(student, 0);
         jPanel.removeAll();
         jPanel.add(marksPanel);
         jPanel.revalidate();
         jPanel.repaint();
       } else if (lbl.equals("Update subject class")) {
-        //        new UpdateSubjectClassPage()
-        //            .displayUpdateSubjectClassPage(this.subjectClassArrayList.get(id));
-        //        // TODO
-        SubjectClass subjectClass = dataService.getAllSubjectClass().get(id);
         SubjectClassPanel subjectClassPanel = new SubjectClassPanel(id, 0, 0);
         jPanel.removeAll();
         jPanel.add(subjectClassPanel);
@@ -178,7 +172,7 @@ public class ButtonEditor extends DefaultCellEditor {
         jPanel.repaint();
       } else if (lbl.equals("Delete subject class")) {
         dataService.deleteSubjectClass(this.subjectClassArrayList.get(id));
-        SubjectClassPanel subjectClassPanel = new SubjectClassPanel(id, 0, 0);
+        SubjectClassPanel subjectClassPanel = new SubjectClassPanel(id - 1, 0, 0);
         jPanel.removeAll();
         jPanel.add(subjectClassPanel);
         jPanel.revalidate();

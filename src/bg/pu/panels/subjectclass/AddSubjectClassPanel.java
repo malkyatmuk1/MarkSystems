@@ -81,7 +81,6 @@ public class AddSubjectClassPanel extends JPanel {
           subjectClassPanel.add(subjectClassPanelNew);
           subjectClassPanel.revalidate();
           subjectClassPanel.repaint();
-          // TODO
         });
     comboBoxClass.addActionListener(
         e -> {
@@ -93,7 +92,6 @@ public class AddSubjectClassPanel extends JPanel {
           subjectClassPanel.add(subjectClassPanelNew);
           subjectClassPanel.revalidate();
           subjectClassPanel.repaint();
-          // TODO
         });
     addButton.addActionListener(
         e -> {

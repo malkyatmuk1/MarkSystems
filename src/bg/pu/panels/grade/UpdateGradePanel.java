@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class UpdateGradePanel extends JPanel {
   DataService dataService = new DataService();
   private JComboBox comboBoxGrade;
-  private JComboBox comboBoxSubject;
+  private JLabel subjectLabel;
   private JLabel subject = new JLabel("Subject");
   private JLabel gradeLabel = new JLabel("grade");
   private JLabel title = new JLabel("Update grade");
@@ -20,7 +20,7 @@ public class UpdateGradePanel extends JPanel {
   private Grade grade;
   private String[] subjectArray;
 
-  public UpdateGradePanel(Student student, MarksPanel marksPanel) {
+  public UpdateGradePanel(Student student, MarksPanel marksPanel, int updateIndex) {
 
     title.setFont(new Font("Verdana", Font.ITALIC, 20));
     title.setText(title.getText() + " - " + student.getFullName());
@@ -32,22 +32,20 @@ public class UpdateGradePanel extends JPanel {
         dataService.getAllSubjectClass(student.getClassStudent());
 
     if (subjectArrayList.size() != 0 && dataService.getAllGradesByStudent(student).size() != 0) {
-      grade = dataService.getAllGradesByStudent(student).get(0);
+      grade = dataService.getAllGradesByStudent(student).get(updateIndex);
       subjectArray = new String[subjectArrayList.size()];
       for (int i = 0; i < subjectArrayList.size(); i++) {
         subjectArray[i] = subjectArrayList.get(i).getSubject().getName();
-        comboBoxSubject = new JComboBox(subjectArray);
-        comboBoxSubject.setSelectedIndex(
-            getIndexOfTheSubject(subjectArrayList, grade.getSubject().getName()));
+        subjectLabel = new JLabel(grade.getSubject().getName());
       }
+      comboBoxGrade.setSelectedItem(grade.getGradeValue());
     } else {
       subjectArray = new String[1];
       subjectArray[0] = "-";
-      comboBoxSubject = new JComboBox(subjectArray);
+      subjectLabel = new JLabel("-");
       addButton.setEnabled(false);
     }
 
-    comboBoxSubject.setBounds(100, 100, 150, 40);
     GridBagLayout layout = new GridBagLayout();
     this.setLayout(layout);
     GridBagConstraints gbc = new GridBagConstraints();
@@ -58,7 +56,7 @@ public class UpdateGradePanel extends JPanel {
     gbc.gridx = 1;
     gbc.gridy = 1;
     gbc.weightx = 0.5;
-    this.add(comboBoxSubject, gbc);
+    this.add(subjectLabel, gbc);
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.gridx = 0;
     gbc.gridy = 2;
@@ -72,15 +70,15 @@ public class UpdateGradePanel extends JPanel {
     gbc.fill = GridBagConstraints.CENTER;
     gbc.gridwidth = 0;
     this.add(addButton, gbc);
-
     addButton.addActionListener(
         e -> {
+          grade = dataService.getAllGradesByStudent(student).get(updateIndex);
           dataService.updateGrade(
               gradeValue[comboBoxGrade.getSelectedIndex()],
-              subjectArrayList.get(comboBoxSubject.getSelectedIndex()).getSubject().getSubjectId(),
+              grade.getSubject().getSubjectId(),
               grade.getStudent().getStudentId(),
               grade.getGradeId());
-          MarksPanel marksPanelNew = new MarksPanel(student);
+          MarksPanel marksPanelNew = new MarksPanel(student, 0);
           marksPanel.removeAll();
           marksPanel.add(marksPanelNew);
           marksPanel.revalidate();
@@ -88,9 +86,9 @@ public class UpdateGradePanel extends JPanel {
         });
   }
 
-  private int getIndexOfTheSubject(ArrayList<SubjectClass> classArrayList, String subjectName) {
+  private int getIndexOfTheSubject(ArrayList<SubjectClass> classArrayList, int id) {
     for (int i = 0; i < classArrayList.size(); i++)
-      if (classArrayList.get(i).getSubject().getName().equals(subjectName)) return i;
+      if (classArrayList.get(i).getSubject().getSubjectId() == id) return i;
     return -1;
   }
 }

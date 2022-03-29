@@ -71,7 +71,7 @@ public class AddGradePanel extends JPanel {
               gradeValue[comboBoxGrade.getSelectedIndex()],
               subjectClassArrayList.get(comboBoxSubject.getSelectedIndex()).getSubject(),
               student);
-          MarksPanel marksPanelNew = new MarksPanel(student);
+          MarksPanel marksPanelNew = new MarksPanel(student, 0);
           marksPanel.removeAll();
           marksPanel.add(marksPanelNew);
           marksPanel.revalidate();
